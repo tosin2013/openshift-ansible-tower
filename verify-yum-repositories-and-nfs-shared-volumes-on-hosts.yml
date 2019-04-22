@@ -8,9 +8,9 @@
     - name: List atomic-openshift-node package on all nodes.
       yum:
         list: atomic-openshift-node
-      register: result
+      register: get-node-info
     - debug:
-      var: "{{ result.std_out }}"
+      var: "{{ get-node-info }}"
       verbosity: 2
     - name: Display NFS server to see which NFS volumes are shared
-      shell: exportfs
+      shell: /usr/sbin/exportfs
