@@ -7,7 +7,7 @@
     - name: Listing the repositories on the bastion host
       shell: yum repolist
       register: getrepolist
-    - debug: var=getrepolist
+    - debug: var=getrepolist.stdout_lines
     - name: List atomic-openshift-node package on all nodes.
       yum:
         list: atomic-openshift-node
