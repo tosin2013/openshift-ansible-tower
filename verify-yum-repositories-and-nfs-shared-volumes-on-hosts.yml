@@ -2,12 +2,13 @@
 - name: Verify Yum Repositories and NFS Shared Volumes on Hosts
   hosts: all
   become: yes
+  gather_facts: no
   tasks:
     - name: Listing the repositories on the bastion host
       shell: yum repolist
       register: get-repolist
-    - debug:
-      var:  get-repolist.stdout_lines
+    - local_action: Displaying yum repolist results
+      with_items: get-repolist.stdout
     - name: List atomic-openshift-node package on all nodes.
       yum:
         list: atomic-openshift-node
