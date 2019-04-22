@@ -1,7 +1,7 @@
 ---
 - name: Verify Yum Repositories and NFS Shared Volumes on Hosts
   hosts: all
- 
+  become: yes
   tasks:
     - name: Listing the repositories on the bastion host
       shell: yum repolist
