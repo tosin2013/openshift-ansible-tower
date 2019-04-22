@@ -6,8 +6,8 @@
   tasks:
     - name: Listing the repositories on the bastion host
       shell: yum repolist
-      register: get-repolist
-    - debug: var=get-repolist
+      register: getrepolist
+    - debug: var=getrepolist
     - name: List atomic-openshift-node package on all nodes.
       yum:
         list: atomic-openshift-node
