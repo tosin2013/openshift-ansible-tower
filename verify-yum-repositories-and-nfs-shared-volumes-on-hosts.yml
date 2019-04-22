@@ -10,7 +10,7 @@
         list: atomic-openshift-node
       register: result
     - debug:
-      var: {{ result.std_out }}
+      var: "{{ result.std_out }}"
       verbosity: 2
     - name: Display NFS server to see which NFS volumes are shared
-      shell: nfs -a 'exportfs'
+      shell: exportfs
