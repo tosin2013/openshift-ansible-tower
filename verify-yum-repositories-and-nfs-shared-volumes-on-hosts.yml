@@ -10,7 +10,6 @@
         list: atomic-openshift-node
       register: get-node-info
     - debug:
-      var: "{{ get-node-info }}"
-      verbosity: 2
+      var:  get-node-info.stdout_lines
     - name: Display NFS server to see which NFS volumes are shared
       shell: /usr/sbin/exportfs
