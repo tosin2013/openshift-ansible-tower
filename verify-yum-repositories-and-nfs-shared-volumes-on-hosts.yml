@@ -11,8 +11,8 @@
     - name: List atomic-openshift-node package on all nodes.
       yum:
         list: atomic-openshift-node
-      register: get-node-info
+      register: getnodeinfo
     - debug:
-      var:  get-node-info.stdout_lines
+      var:  getnodeinfo.stdout_lines
     - name: Display NFS server to see which NFS volumes are shared
       shell: /usr/sbin/exportfs
