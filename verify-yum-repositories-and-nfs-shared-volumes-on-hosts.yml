@@ -14,4 +14,4 @@
       register: getnodeinfo
     - debug: var=getnodeinfo.results
     - name: Display NFS server to see which NFS volumes are shared
-      shell: /usr/sbin/exportfs
+      shell: mount -a
