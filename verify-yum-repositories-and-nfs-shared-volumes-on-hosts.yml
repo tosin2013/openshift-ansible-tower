@@ -15,3 +15,5 @@
     - debug: var=getnodeinfo.results
     - name: Display NFS server to see which NFS volumes are shared
       shell: mount -a
+      register: nfsmountpoint
+    - debug: var=nfsmountpoint.stdout_lines
