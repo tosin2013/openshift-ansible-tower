@@ -12,7 +12,6 @@
       yum:
         list: atomic-openshift-node
       register: getnodeinfo
-    - debug:
-      var:  getnodeinfo.stdout_lines
+    - debug: var=getnodeinfo
     - name: Display NFS server to see which NFS volumes are shared
       shell: /usr/sbin/exportfs
