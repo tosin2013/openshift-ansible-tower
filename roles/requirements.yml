@@ -2,7 +2,6 @@
 - src: yatesr.timezone
 
 # vmware-provision code
-- name: tosin2013.vmware-provision
+- name: GoKEV.vmware-provision
   version: latest
-  src: https://github.com/tosin2013/vmware-provision.git
-
+  src: https://github.com/GoKEV/GoKEV-vmware-provision.git
