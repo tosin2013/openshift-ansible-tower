@@ -1,5 +1,5 @@
 ---
-- name: Hello World!
+- name: Deploy virtual machine on vmware
   hosts: all
   roles:
     - { role: vmware-provision }
