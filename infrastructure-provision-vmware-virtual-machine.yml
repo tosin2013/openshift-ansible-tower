@@ -4,4 +4,4 @@
   gather_facts: no
 
   roles:
-    - { role: GoKEV.vmware-provision }
+    - { role: vmware-provision }
