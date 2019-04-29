@@ -2,7 +2,7 @@
 - src: yatesr.timezone
 
 # vmware-provision code
-- name: vmware-provision
+- name: tosin2013.vmware-provision
   version: latest
 - src: https://github.com/tosin2013/vmware-provision.git
 

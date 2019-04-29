@@ -3,4 +3,4 @@
   hosts: localhost
   gather_facts: no
   roles:
-    - { role: vmware-provision }
+    - { role: tosin2013.vmware-provision }
