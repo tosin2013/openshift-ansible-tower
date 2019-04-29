@@ -1,5 +1,6 @@
 ---
 - name: Deploy virtual machine on vmware
-  hosts: all
+  hosts: localhost
+  gather_facts: no
   roles:
     - { role: vmware-provision }
