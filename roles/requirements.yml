@@ -4,5 +4,5 @@
 # vmware-provision code
 - name: tosin2013.vmware-provision
   version: latest
-- src: https://github.com/tosin2013/vmware-provision.git
+  src: https://github.com/tosin2013/vmware-provision.git
 
