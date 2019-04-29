@@ -3,5 +3,5 @@
 
 # vmware-provision code
 - name: vmware-provision
-- src: https://github.com/tosin2013/vmware-provision.git
+  src: https://github.com/tosin2013/vmware-provision
 
