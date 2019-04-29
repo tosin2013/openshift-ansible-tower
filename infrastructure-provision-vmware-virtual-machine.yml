@@ -1,6 +1,7 @@
 ---
 - name: Deploy virtual machine on vmware
-  hosts: localhost
+  hosts: all
   gather_facts: no
+
   roles:
-    - { role: tosin2013.vmware-provision }
+    - { role: GoKEV.vmware-provision }
