@@ -3,5 +3,6 @@
 
 # vmware-provision code
 - src: https://github.com/tosin2013/vmware-provision
+  version: latest
   name: vmware-provision
 
