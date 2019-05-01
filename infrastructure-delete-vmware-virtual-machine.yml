@@ -4,7 +4,7 @@
   gather_facts: no
   
   tasks: 
-  - name: Removomg {{ vm_name }} virtual machine
+  - name: Removing {{ vm_name }} virtual machine
     vmware_guest:
       hostname: "{{ vcenter_datacenter }}"
       validate_certs: no
