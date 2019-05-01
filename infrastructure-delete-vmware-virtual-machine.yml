@@ -6,7 +6,7 @@
   vmware_guest:
     hostname: "{{ vcenter_datacenter }}"
     validate_certs: no
-    cluster: "vcenter_ cluster"
+    cluster: "{{ vcenter_ cluster }}"
     name: "{{ vm_name }}"
     state: absent
   delegate_to: localhost
