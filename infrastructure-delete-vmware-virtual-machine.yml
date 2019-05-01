@@ -1,5 +1,5 @@
 ---
-- name: Remove virtual machine 
+- name: Remove virtual machine
   hosts: all
   gather_facts: no
   
