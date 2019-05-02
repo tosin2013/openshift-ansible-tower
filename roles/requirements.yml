@@ -3,10 +3,8 @@
 
 # vmware-provision code
 - src: https://github.com/tosin2013/vmware-provision
-  version: latest
   name: vmware-provision
 
 # Sets up ISC BIND on RHEL/CentOS 7, Ubuntu 16.04/18.04, Debian 8/9, or Arch Linux as an authoritative DNS server
 - src: https://github.com/tosin2013/ansible-role-bind
-  version: latest
   name: ansible-role-bind
