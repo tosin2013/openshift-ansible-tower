@@ -1,6 +1,5 @@
 ---
 - hosts: dns_server
-  become: yes
   gather_facts: false
   tasks:
   - name: Ansible check if {{ user_data_file }} exists.

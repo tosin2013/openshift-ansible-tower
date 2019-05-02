@@ -1,5 +1,4 @@
 - hosts: dns_server
-  become: yes
   tasks:
   - name: update resolve.conf with temp dns for package installation
     blockinfile:
