@@ -1,6 +1,5 @@
 ---
 - hosts: dns_server
-  remote_user: "{{ rhel_user }}"
   become: yes
   gather_facts: false
   tasks:

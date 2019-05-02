@@ -1,5 +1,4 @@
 - hosts: all
-  remote_user: "{{rhel_user}}"
   become: yes
   tasks:
   - name: update named.conf with new zone {{ zone_name }}

@@ -2,7 +2,6 @@
 # https://github.com/bertvv/ansible-role-bind
 ---
 - hosts: all
-  remote_user: "{{ rhel_user }}"
   become: yes
   roles:
   - ansible-role-bind

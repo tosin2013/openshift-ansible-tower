@@ -1,5 +1,4 @@
 - hosts: all
-  remote_user: "{{rhel_user}}"
   become: yes
   tasks:
   - name: Check if port {{ port_num }} is listening
