@@ -1,0 +1,22 @@
+# https://github.com/bertvv/ansible-role-bind/blob/docker-tests/test.yml
+# https://github.com/bertvv/ansible-role-bind
+---
+- hosts: all
+  remote_user: "{{ rhel_user }}"
+  become: yes
+  roles:
+  - ansible-role-bind
+  vars:
+    bind_listen_ipv4: ['any']
+    bind_allow_query: ['any']
+    bind_zone_master_server_ip: "{{ master_server_ip }}"
+    bind_forwarders: [1.1.1.1,8.8.8.8]
+    bind_recursion: true
+    bind_zone_name: "{{ fqdn }}"
+    bind_zone_networks:
+      - "{{ zone_network }}"
+    bind_zone_domains:
+    - name: "{{ fqdn }}"
+      ip: "{{ zone_ip }}"
+      aliases:
+        - ns
