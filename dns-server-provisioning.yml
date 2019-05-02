@@ -14,6 +14,12 @@
       auto_attach: true
     when:
       - ansible_distribution == "RedHat"
+  - name: Create /etc/dhcp/dhclient.conf if it does not exist
+    file:
+      path: "/etc/dhcp/dhclient.conf"
+      state: touch
+    when:
+      - ansible_distribution == "CentOS"
   - name: update dhclient.conf with loopback for dns
     blockinfile:
       path: /etc/dhcp/dhclient.conf
