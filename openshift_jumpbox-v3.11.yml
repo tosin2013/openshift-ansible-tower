@@ -13,6 +13,14 @@
        rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 >> /tmp/epelgpgimport.log
     when:
       - ansible_distribution == "CentOS"
+  - name: Register as auto-subscribe to red hat subscription.
+    redhat_subscription:
+      state: present
+      username: "{{ rhel_username }}"
+      password: "{{ rhel_password }}"
+      auto_attach: true
+    when:
+      - ansible_distribution == "RedHat"
   - name: Enable a Ansible 2.6 repository
     rhsm_repository:
       name: rhel-7-server-ansible-2.6-rpms
