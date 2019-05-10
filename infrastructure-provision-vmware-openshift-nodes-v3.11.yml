@@ -119,7 +119,7 @@
       dest: "/etc/sysconfig/docker-storage-setup"
       content: |
         STORAGE_DRIVER=overlay2
-        DEVS=/dev/vdb
+        DEVS=/dev/sdb
         VG=docker-vg
     when:
       - ansible_distribution == "RedHat"
