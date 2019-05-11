@@ -131,3 +131,20 @@
     yum:
       name:
       - java-1.8.0-openjdk-devel.x86_64
+  - name: check if /etc/sysconfig/network-scripts/ifcfg-ens192 file exists
+    stat: 
+      path: /etc/sysconfig/network-scripts/ifcfg-ens192
+    register: ifcfgens192
+  - name: Turn off PEERDNS
+    lineinfile:
+      path:  /etc/sysconfig/network-scripts/ifcfg-ens192
+      regexp: '^PEERDNS=yes'
+      line: 'PEERDNS=no'
+    when: 
+      - ifcfgens192.stat.exists == true
+  - name: Add loopback address as default DNS server
+    lineinfile:
+      path: /etc/sysconfig/network-scripts/ifcfg-ens192
+      line: 'DNS1={{ dns_server }}'
+    when:
+      - ifcfgens192.stat.exists == true
