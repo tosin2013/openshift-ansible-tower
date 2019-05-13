@@ -1,5 +1,5 @@
 ---
-- hosts: jumpbox
+- hosts: all
   tasks:
   - name: check if htpasswd file exists
     stat:
