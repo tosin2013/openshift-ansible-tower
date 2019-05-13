@@ -1,5 +1,5 @@
 ---
-- hosts: master
+- hosts: jumpbox
   tasks:
   - name: check if htpasswd file exists
     stat:
@@ -13,6 +13,6 @@
       - passFile.stat.exists == false
   - name: generate htpasswd to login to openshift
     shell: |
-      htpasswd -b -c ~/temp/password {{ oc_username }}
+      htpasswd -b -c ~/temp/temppassword {{ oc_username }}
     when:
       - passFile.stat.exists == false
