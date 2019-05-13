@@ -10,3 +10,7 @@
       htpasswd -b -c   /home/tosin/openshift-ansible/passwordFile {{ oc_username }} {{ oc_password }}
     when:
       - passFile.stat.exists == false
+  - name: run OpenShift playbooks/prerequisites.yml
+    shell: |
+      cd /home/tosin/openshift-ansible
+      ansible-playbook -i {{ inventory file }} playbooks/prerequisites.yml
