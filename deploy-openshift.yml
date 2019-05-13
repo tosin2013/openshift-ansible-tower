@@ -13,4 +13,4 @@
   - name: run OpenShift playbooks/prerequisites.yml
     shell: |
       cd /home/tosin/openshift-ansible
-      ansible-playbook -i {{ inventory file }} playbooks/prerequisites.yml
+      ansible-playbook -i {{ inventory_file }} playbooks/prerequisites.yml
