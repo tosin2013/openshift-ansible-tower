@@ -127,7 +127,7 @@
   - name: Add loopback address as default DNS server
     lineinfile:
       path: /etc/sysconfig/network-scripts/ifcfg-ens192
-      line: 'DNS1={{ dns_server }}'
+      line: 'DNS1={{ dns_server_ip }}'
     when:
       - ifcfgens192.stat.exists == true
   - name: Cloning OpenShift release-3.11 to machine
