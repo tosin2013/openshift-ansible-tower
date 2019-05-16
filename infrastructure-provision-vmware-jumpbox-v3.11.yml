@@ -130,30 +130,11 @@
       line: 'DNS1={{ dns_server_ip }}'
     when:
       - ifcfgens192.stat.exists == true
-  - name: Cloning OpenShift release-3.11 to machine
-    git:
-      repo: 'https://github.com/openshift/openshift-ansible.git'
-      dest: /home/{{ rhel_user }}/openshift-ansible
-      version: release-3.11
-  - name: change openshift-ansible owner to {{ rhel_user }}
-    file:
-      path: /home/{{ rhel_user }}/openshift-ansible
-      owner: "{{ rhel_user }}"
-      group: "{{ rhel_user }}"
-      mode: 0775
+  - name: installing openshift-ansible RPM-based installer 
+    yum:
+      name:
+      - openshift-ansible
   - name: Cloning  Bash full of Colors to machine
     git:
       repo: 'https://github.com/tosin2013/bash-full-of-colors.git'
       dest: /home/{{ rhel_user }}/bash-full-of-colors
-  - name: Run script to modifiy terminal layout
-    shell: |
-      cd /home/{{ rhel_user }}
-      [ -f .bashrc ] && mv -v .bashrc /tmp/bashrc.old
-      [ -f .bash_profile ] && mv -v .bash_profile /tmp/bash_profile.old
-      [ -f .bash_aliases ] && mv -v .bash_aliases /tmp/bash_aliases.old
-      [ -f .bash_logout ] && mv -v .bash_logout /tmp/bash_logout.old
-      cp /home/{{ rhel_user }}/bash-full-of-colors/bashrc.sh /home/{{ rhel_user }}/.bashrc
-      cp /home/{{ rhel_user }}/bash-full-of-colors/bash_profile.sh /home/{{ rhel_user }}/.bash_profile
-      cp /home/{{ rhel_user }}/bash-full-of-colors/bash_aliases.sh /home/{{ rhel_user }}/.bash_aliases
-      cp /home/{{ rhel_user }}/bash-full-of-colors/bash_logout.sh /home/{{ rhel_user }}/.bash_logout
-      rm -rf bash-full-of-colors/
