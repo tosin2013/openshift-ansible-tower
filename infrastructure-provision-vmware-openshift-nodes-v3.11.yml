@@ -84,36 +84,6 @@
         - docker-1.13.1
     when:
       - ansible_distribution == "RedHat"
-  - name: install centos dependent packages
-    yum:
-      name:
-        - pyOpenSSL
-        - device-mapper-event-libs
-        - device-mapper-libs
-        - httpd-tools
-        - java-1.8.0-openjdk-devel.x86_64
-        - tmux
-        - lvm2
-        - NetworkManager
-        - centos-release-gluster
-      state: present
-    when:
-      - ansible_distribution == "CentOS"
-  - name: enable NetworkManager for Openshift use CentOS
-    systemd:
-      name: NetworkManager
-      state: started
-      enabled: yes
-    when:
-      - ansible_distribution == "CentOS"
-  - name: install glusterfs-server packages
-    yum:
-      name:
-        - glusterfs-server
-      state: present
-    when:
-      - ansible_distribution == "CentOS"
-      - glusterstorage
   - name: create docker-storage-setup file
     copy:
       dest: "/etc/sysconfig/docker-storage-setup"
@@ -131,6 +101,10 @@
     yum:
       name:
       - java-1.8.0-openjdk-devel.x86_64
+  - name: installing openshift-ansible RPM-based installer 
+    yum:
+      name:
+      - openshift-ansible
   - name: check if /etc/sysconfig/network-scripts/ifcfg-ens192 file exists
     stat: 
       path: /etc/sysconfig/network-scripts/ifcfg-ens192

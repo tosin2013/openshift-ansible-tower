@@ -69,22 +69,15 @@
       state: present
     when:
       - ansible_distribution == "RedHat"
-  - name: install epel-release packages
-    yum:
-      name:
-        - epel-release
-      state: present
-    when:
-      - ansible_distribution == "CentOS"
-  - name: install python-pip packages
-    yum:
-      name:
-        - python-pip
-      state: present
-    when:
-      - ansible_distribution == "CentOS"
-  - name: Run script to modifiy terminal layout
-    shell: |
-        pip install dnspython
-    when:
-      - ansible_distribution == "CentOS"
+  - name: Configure Firewall rules for dns server  port 53 on UDP
+    firewalld:
+      zone: public
+      port: 53/udp
+      permanent: yes
+      state: enabled
+  - name: Configure Firewall rules for dns server Port 53 on TCP
+    firewalld:
+      zone: public
+      port: 53/tcp
+      permanent: yes
+      state: enabled
