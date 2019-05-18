@@ -27,6 +27,12 @@
       state: enabled
     when:
       - ansible_distribution == "RedHat"
+  - name: Enable a OpenShift 3.11 repository
+    rhsm_repository:
+      name: rhel-7-server-ose-3.11-rpms
+      state: enabled
+    when:
+      - ansible_distribution == "RedHat"
   - name: Enable rhel-7-server-rpms repository
     rhsm_repository:
       name: rhel-7-server-rpms
