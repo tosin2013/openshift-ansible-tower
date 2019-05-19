@@ -1,18 +1,6 @@
 ---
 - hosts: all
   tasks:
-  - name: Add EPEL repository for CentOS deployments
-    yum_repository:
-      name: epel
-      description: EPEL YUM repo
-      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-    when:
-      - ansible_distribution == "CentOS"
-  - name: Importing rpm gpg-key for CentOS deployments.
-    shell: |
-       rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 >> /tmp/epelgpgimport.log
-    when:
-      - ansible_distribution == "CentOS"
   - name: Register as auto-subscribe to red hat subscription.
     redhat_subscription:
       state: present
@@ -50,12 +38,6 @@
       state: enabled
     when:
       - ansible_distribution == "RedHat"
-  - name: Add Docker repo
-    get_url:
-      url: https://download.docker.com/linux/centos/docker-ce.repo
-      dest: /etc/yum.repos.d/docker-ce.repo
-    when:
-      - ansible_distribution == "CentOS"
   - name: upgrade all packages
     yum:
       name: '*'
@@ -76,38 +58,6 @@
       - psacct
       - vim
       state: present
-  - name: install required packages for CENTOS
-    yum:
-      name:
-        - pyOpenSSL
-        - device-mapper-event-libs
-        - device-mapper-libs
-        - httpd-tools
-        - java-1.8.0-openjdk-devel.x86_64
-        - tmux
-        - patch
-        - lvm2
-        - docker-ce
-        - python-pip
-      state: present
-    when:
-      - ansible_distribution == "CentOS"
-  - name: Run script to modifiy terminal layout
-    shell: |
-         pip install passlib
-    when:
-      - ansible_distribution == "CentOS"
-  - name: Download ansible-2.6.5 rpm for centos
-    get_url:
-      url: https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.5-1.el7.ans.noarch.rpm
-      dest: /tmp/ansible-2.6.5-1.el7.ans.noarch.rpm
-    when:
-      - ansible_distribution == "CentOS"
-  - name: Installing ansible-2.6.5-1.el7.ans.noarch.rpm on CentOS.
-    shell: |
-      yum install /tmp/ansible-2.6.5-1.el7.ans.noarch.rpm -y >> /tmp/ansibleinstall.log
-    when:
-      - ansible_distribution == "CentOS"
   - name: Install a list of packages
     yum:
       name:
@@ -120,7 +70,7 @@
     when:
       - ansible_distribution == "RedHat"
   - name: check if /etc/sysconfig/network-scripts/ifcfg-ens192 file exists
-    stat: 
+    stat:
       path: /etc/sysconfig/network-scripts/ifcfg-ens192
     register: ifcfgens192
   - name: Turn off PEERDNS
@@ -128,7 +78,7 @@
       path:  /etc/sysconfig/network-scripts/ifcfg-ens192
       regexp: '^PEERDNS=yes'
       line: 'PEERDNS=no'
-    when: 
+    when:
       - ifcfgens192.stat.exists == true
   - name: Add loopback address as default DNS server
     lineinfile:
@@ -136,11 +86,26 @@
       line: 'DNS1={{ dns_server_ip }}'
     when:
       - ifcfgens192.stat.exists == true
-  - name: installing openshift-ansible RPM-based installer 
+  - name: installing openshift-ansible RPM-based installer
     yum:
       name:
       - openshift-ansible
+  - name: Set timezone to "{{ time_zone }}"
+    timezone:
+      name: "{{ time_zone }}"
   - name: Cloning  Bash full of Colors to machine
     git:
       repo: 'https://github.com/tosin2013/bash-full-of-colors.git'
-      dest: /home/{{ rhel_user }}/bash-full-of-colors
+      dest: /home/root/bash-full-of-colors
+  - name: Run script to modifiy terminal layout
+    shell: |
+      cd /home/root
+      [ -f .bashrc ] && mv -v .bashrc /tmp/bashrc.old
+      [ -f .bash_profile ] && mv -v .bash_profile /tmp/bash_profile.old
+      [ -f .bash_aliases ] && mv -v .bash_aliases /tmp/bash_aliases.old
+      [ -f .bash_logout ] && mv -v .bash_logout /tmp/bash_logout.old
+      cp /home/root/bash-full-of-colors/bashrc.sh /home/root/.bashrc
+      cp /home/root/bash-full-of-colors/bash_profile.sh /home/root/.bash_profile
+      cp /home/root/bash-full-of-colors/bash_aliases.sh /home/root/.bash_aliases
+      cp /home/root/bash-full-of-colors/bash_logout.sh /home/root/.bash_logout
+      rm -rf bash-full-of-colors/
