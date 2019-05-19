@@ -109,3 +109,8 @@
       cp /home/root/bash-full-of-colors/bash_aliases.sh /home/root/.bash_aliases
       cp /home/root/bash-full-of-colors/bash_logout.sh /home/root/.bash_logout
       rm -rf bash-full-of-colors/
+  - name: Enable https for ansible tower access
+    firewalld:
+      service: https
+      permanent: yes
+      state: enabled
