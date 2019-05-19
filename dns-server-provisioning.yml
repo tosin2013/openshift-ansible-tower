@@ -15,7 +15,7 @@
     when:
       - ansible_distribution == "RedHat"
   - name: check if /etc/sysconfig/network-scripts/ifcfg-ens192 file exists
-    stat: 
+    stat:
       path: /etc/sysconfig/network-scripts/ifcfg-ens192
     register: ifcfgens192
   - name: Turn off PEERDNS
@@ -23,7 +23,7 @@
       path:  /etc/sysconfig/network-scripts/ifcfg-ens192
       regexp: '^PEERDNS=yes'
       line: 'PEERDNS=no'
-    when: 
+    when:
       - ifcfgens192.stat.exists == true
   - name: Add loopback address as default DNS server
     lineinfile:
@@ -32,7 +32,7 @@
     when:
       - ifcfgens192.stat.exists == true
   - name: check if dhclient.conf file exists
-    stat: 
+    stat:
       path: /etc/dhcp/dhclient.conf
     register: dhcpclientconf
     when:
@@ -62,7 +62,7 @@
     yum:
       name: '*'
       state: latest
-  - name: install epel-release packages
+  - name: install python-dns package
     yum:
       name:
         - python-dns
@@ -81,3 +81,11 @@
       port: 53/tcp
       permanent: yes
       state: enabled
+  - name: Set timezone to "{{ time_zone }}"
+    timezone:
+      name: "{{ time_zone }}"
+
+  - role: ansible-role-chrony
+    chrony_config_server:
+      - "{{ ntp_server_one }}"
+      - "{{ ntp_server_one }}"

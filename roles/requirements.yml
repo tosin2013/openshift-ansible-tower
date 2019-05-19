@@ -12,3 +12,8 @@
 # Simple Role to Setup Ansible Tower by Red Hat.
 - src: https://github.com/tosin2013/ansible-role-tower-setup
   name: ansible-role-tower-setup
+
+
+# Simple Role to coonfigure chrony
+- src: https://github.com/tosin2013/ansible-role-chrony
+  name: ansible-role-chrony
