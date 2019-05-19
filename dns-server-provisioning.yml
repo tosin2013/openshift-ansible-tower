@@ -84,8 +84,3 @@
   - name: Set timezone to "{{ time_zone }}"
     timezone:
       name: "{{ time_zone }}"
-
-  - role: ansible-role-chrony
-    chrony_config_server:
-      - "{{ ntp_server_one }}"
-      - "{{ ntp_server_one }}"

@@ -1,0 +1,8 @@
+---
+- hosts: all
+  roles:
+  - ansible-role-chrony
+  vars:
+    chrony_config_server:
+      - "{{ ntp_server_one }}"
+      - "{{ ntp_server_two }}"
