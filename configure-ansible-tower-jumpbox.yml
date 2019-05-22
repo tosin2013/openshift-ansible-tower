@@ -19,6 +19,9 @@
     file:
      path: /opt/ansible-config
      state: directory
-  - name: Hello World!
+  - name: Updating Ansible Tower Configuration
+    shell:  |
+      tower-cli send /opt/ansible-config/environments/towerconfigs/"{{ ansible_tower_config }}"
+  - name: Updating OpenShift Inventory
     shell:  |
       tower-manage inventory_import --source=/opt/ansible-config/environments/"{{ awxinventorypath }}"--inventory-name="{{ awxinventoryname }}" --overwrite --overwrite-vars
