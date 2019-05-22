@@ -4,15 +4,15 @@
   - name: check if ansible-config folder exists
     stat:
       path: /opt/ansible-config
-    register: check-ansible-config
+    register: check_ansible_config
   - name: ansible create ansible-config directory
     file:
      path: /opt/ansible-config
      state: directory
-    when: check-ansible-config.stat.exists == true
+    when: not check_ansible_config.stat.exists
   - name: Create  repo location
     git:
-      repo: "https://{{ githubuser |urlencoode }}:{{ gitlabpassword }}@gitlab.consulting.redhat.com/rto/ansible-tower-configs.git"
+      repo: "https://{{ githubuser | urlencoode }}:{{ gitlabpassword }}@gitlab.consulting.redhat.com/rto/ansible-tower-configs.git"
       dest: /opt/ansible-config
       version: "{{ branch }}"
   - name: ansible create ansible-config directory
@@ -21,7 +21,7 @@
      state: directory
   - name: Updating Ansible Tower Configuration
     shell:  |
-      tower-cli send /opt/ansible-config/environments/towerconfigs/"{{ ansible_tower_config }}"
+      tower-cli send /opt/ansible-config/environments/towerconfigs/{{ ansible_tower_config }}
   - name: Updating OpenShift Inventory
     shell:  |
-      tower-manage inventory_import --source=/opt/ansible-config/environments/"{{ awxinventorypath }}"--inventory-name="{{ awxinventoryname }}" --overwrite --overwrite-vars
+      tower-manage inventory_import --source=/opt/ansible-config/environments/{{ awxinventorypath }} --inventory-name={{ awxinventoryname }} --overwrite --overwrite-vars
