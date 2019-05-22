@@ -12,7 +12,7 @@
     when: not check_ansible_config.stat.exists
   - name: Create  repo location
     git:
-      repo: "https://{{ githubuser | urlencoode }}:{{ gitlabpassword }}@gitlab.consulting.redhat.com/rto/ansible-tower-configs.git"
+      repo: "https://{{ githubuser | urlencode }}:{{ gitlabpassword }}@gitlab.consulting.redhat.com/rto/ansible-tower-configs.git"
       dest: /opt/ansible-config
       version: "{{ branch }}"
   - name: ansible create ansible-config directory
@@ -21,7 +21,11 @@
      state: directory
   - name: Updating Ansible Tower Configuration
     shell:  |
-      tower-cli send /opt/ansible-config/environments/towerconfigs/{{ ansible_tower_config }}
+      #!/bin/bash
+      rm /var/log/tower-config.log
+      tower-cli config verify_ssl false | tee /var/log/tower-config.log
+      tower-cli login admin -p {{ tower_password }} | tee /var/log/tower-config.log
+      tower-cli send /opt/ansible-config/towerconfigs/{{ ansible_tower_config }} | tee /var/log/tower-config.log
   - name: Updating OpenShift Inventory
     shell:  |
-      tower-manage inventory_import --source=/opt/ansible-config/environments/{{ awxinventorypath }} --inventory-name={{ awxinventoryname }} --overwrite --overwrite-vars
+      tower-manage inventory_import --source=/opt/ansible-config/environments/{{ awxinventorypath }} --inventory-name={{ awxinventoryname }} --overwrite --overwrite-vars | tee /var/log/openshift-inventory-push.log
