@@ -12,7 +12,7 @@
     when: check-ansible-config.stat.exists == true
   - name: Create  repo location
     git:
-      repo: "{{ repo_url }}"
+      repo: "https://{{ githubuser |urlencoode }}:{{ gitlabpassword }}@gitlab.consulting.redhat.com/rto/ansible-tower-configs.git"
       dest: /opt/ansible-config
       version: "{{ branch }}"
   - name: ansible create ansible-config directory
