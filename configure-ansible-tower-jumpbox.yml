@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+  - name: ansible create ansible-config directory
+   file:
+     path: /opt/ansible-config
+     state: directory
+  - name: Create  repo location
+  git:
+    repo: "{{ repo_url }}"
+    dest: /opt/ansible-config
+    version: "{{ branch }}"
