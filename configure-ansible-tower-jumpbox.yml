@@ -1,12 +1,24 @@
 ---
 - hosts: all
   tasks:
+  - name: check if ansible-config folder exists
+    stat:
+      path: /opt/ansible-config
+    register: check-ansible-config
   - name: ansible create ansible-config directory
-   file:
+    file:
      path: /opt/ansible-config
      state: directory
+    when: check-ansible-config.stat.exists == true
   - name: Create  repo location
-  git:
-    repo: "{{ repo_url }}"
-    dest: /opt/ansible-config
-    version: "{{ branch }}"
+    git:
+      repo: "{{ repo_url }}"
+      dest: /opt/ansible-config
+      version: "{{ branch }}"
+  - name: ansible create ansible-config directory
+    file:
+     path: /opt/ansible-config
+     state: directory
+  - name: Hello World!
+    shell:  |
+      tower-manage inventory_import --source=/opt/ansible-config/environments/"{{ awxinventorypath }}"--inventory-name="{{ awxinventoryname }}" --overwrite --overwrite-vars
