@@ -11,4 +11,4 @@
           allow-update { none; };
         };
   - name: running configure dns keys on server
-    script: configure_dns_keys.sh "{{ key_name }}"   "{{ server_ip }}" "{{ zone_name }}"
+    script: configure_dns_keys.sh "{{ key_name }}"   "{{ server_ip }}" "{{ zone_name }}" | tee /var/log/configure_dns_keys.log
