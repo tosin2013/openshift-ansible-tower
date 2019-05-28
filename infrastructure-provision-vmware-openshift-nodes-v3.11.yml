@@ -119,7 +119,7 @@
     hostname:
       name="{{ inventory_hostname }}"
     when:
-      ansible_fqdn != "{{ server_name }}. {{ fqdn }}"
+      ansible_fqdn != "{{ vm_host_name }}.{{ fqdn }}"
   - name: Fix /etc/hosts removing the old hostname
     tags:
       - hosts
@@ -129,10 +129,10 @@
       line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }} {{ ansible_hostname }}"
       regexp="^{{ ansible_default_ipv4.address }}"
     when:
-      ansible_fqdn != "{{ server_name }}. {{ fqdn }}"
+      ansible_fqdn != "{{ vm_host_name }}.{{ fqdn }}"
   - name: Validate ansible_fqdn == inventory_hostname
     tags:
       - validate
     assert:
       that:
-        ansible_fqdn == "{{ server_name }}. {{ fqdn }}"
+        ansible_fqdn == "{{ vm_host_name }}.{{ fqdn }}"
