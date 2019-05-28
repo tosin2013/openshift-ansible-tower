@@ -1,0 +1,28 @@
+---
+- hosts: all
+  tasks:
+    - name: Get master.{{ dns_zone }} ip address
+      shell: |
+        #/bin/bash
+        HDSIZE=$(df -h | grep root | awk '{print $2}' | tr -d G)
+        if [[ $((HDSIZE)) -lt 50 ]]; then
+          echo "resizing hard drive"
+          # configure Partition
+        echo "n
+        p
+        3
+
+
+        t
+        3
+        8e
+        w" | fdisk /dev/sda
+
+        partprobe
+        pvcreate /dev/sda3
+        vgextend rhel /dev/sda3
+        pvscan
+        lvextend /dev/rhel/root /dev/sda3
+        xfs_growfs  /dev/rhel/root
+        vgdisplay
+        fi
