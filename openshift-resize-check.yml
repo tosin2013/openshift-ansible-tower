@@ -1,7 +1,7 @@
 ---
 - hosts: all
   tasks:
-    - name: Get master.{{ dns_zone }} ip address
+    - name: Resize hard drive if root is less than 50G
       shell: |
         #/bin/bash
         HDSIZE=$(df -h | grep root | awk '{print $2}' | tr -d G)
