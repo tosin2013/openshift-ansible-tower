@@ -13,21 +13,6 @@
     yum:
       name: '*'
       state: latest
-  - name: install base packages
-    yum:
-      name:
-      - wget
-      - git
-      - net-tools
-      - bind-utils
-      - yum-utils
-      - iptables-services
-      - bridge-utils
-      - bash-completion
-      - kexec-tools
-      - sos
-      - psacct
-      state: present
   - name: Enable rhel-7-server-rpms repository
     rhsm_repository:
       name: rhel-7-server-rpms
@@ -71,6 +56,25 @@
     when:
       - ansible_distribution == "RedHat"
       - glusterstorage
+  - name: install base packages
+    yum:
+      name:
+      - wget
+      - git
+      - net-tools
+      - bind-utils
+      - yum-utils
+      - iptables-services
+      - bridge-utils
+      - bash-completion
+      - kexec-tools
+      - sos
+      - psacct
+      state: present
+  - name: installing openshift-ansible RPM-based installer 
+    yum:
+      name:
+      - openshift-ansible
   - name: Install glusterfs-fuse
     yum:
       name:
@@ -101,10 +105,6 @@
     yum:
       name:
       - java-1.8.0-openjdk-devel.x86_64
-  - name: installing openshift-ansible RPM-based installer 
-    yum:
-      name:
-      - openshift-ansible
   - name: check if /etc/sysconfig/network-scripts/ifcfg-ens192 file exists
     stat: 
       path: /etc/sysconfig/network-scripts/ifcfg-ens192
@@ -115,3 +115,24 @@
       line: 'DNS1={{ dns_server }}'
     when:
       - ifcfgens192.stat.exists == true
+  - name: Change the hostname to our standard
+    hostname:
+      name="{{ inventory_hostname }}"
+    when:
+      ansible_fqdn != "{{ server_name }}. {{ fqdn }}"
+  - name: Fix /etc/hosts removing the old hostname
+      tags:
+        - hosts
+      lineinfile:
+        state=present
+        dest=/etc/hosts
+        line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }} {{ ansible_hostname }}"
+        regexp="^{{ ansible_default_ipv4.address }}"
+      when:
+        ansible_fqdn != "{{ server_name }}. {{ fqdn }}"
+  - name: Validate ansible_fqdn == inventory_hostname
+    tags:
+      - validate
+    assert:
+      that:
+        ansible_fqdn == "{{ server_name }}. {{ fqdn }}"
