@@ -121,15 +121,15 @@
     when:
       ansible_fqdn != "{{ server_name }}. {{ fqdn }}"
   - name: Fix /etc/hosts removing the old hostname
-      tags:
-        - hosts
-      lineinfile:
-        state=present
-        dest=/etc/hosts
-        line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }} {{ ansible_hostname }}"
-        regexp="^{{ ansible_default_ipv4.address }}"
-      when:
-        ansible_fqdn != "{{ server_name }}. {{ fqdn }}"
+    tags:
+      - hosts
+    lineinfile:
+      state=present
+      dest=/etc/hosts
+      line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }} {{ ansible_hostname }}"
+      regexp="^{{ ansible_default_ipv4.address }}"
+    when:
+      ansible_fqdn != "{{ server_name }}. {{ fqdn }}"
   - name: Validate ansible_fqdn == inventory_hostname
     tags:
       - validate
