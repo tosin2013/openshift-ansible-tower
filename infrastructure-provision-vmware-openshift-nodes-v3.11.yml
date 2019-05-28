@@ -71,7 +71,7 @@
       - sos
       - psacct
       state: present
-  - name: installing openshift-ansible RPM-based installer 
+  - name: installing openshift-ansible RPM-based installer
     yum:
       name:
       - openshift-ansible
@@ -106,7 +106,7 @@
       name:
       - java-1.8.0-openjdk-devel.x86_64
   - name: check if /etc/sysconfig/network-scripts/ifcfg-ens192 file exists
-    stat: 
+    stat:
       path: /etc/sysconfig/network-scripts/ifcfg-ens192
     register: ifcfgens192
   - name: Add loopback address as default DNS server
@@ -115,24 +115,3 @@
       line: 'DNS1={{ dns_server }}'
     when:
       - ifcfgens192.stat.exists == true
-  - name: Change the hostname to our standard
-    hostname:
-      name="{{ vm_host_name }}.{{ fqdn }}"
-    when:
-      ansible_fqdn != "{{ vm_host_name }}.{{ fqdn }}"
-  - name: Fix /etc/hosts removing the old hostname
-    tags:
-      - hosts
-    lineinfile:
-      state=present
-      dest=/etc/hosts
-      line="{{ ansible_default_ipv4.address }} {{ vm_host_name }} {{ vm_host_name }}.{{ fqdn }}"
-      regexp="^{{ ansible_default_ipv4.address }}"
-    when:
-      ansible_fqdn != "{{ vm_host_name }}.{{ fqdn }}"
-  - name: Validate ansible_fqdn == inventory_hostname
-    tags:
-      - validate
-    assert:
-      that:
-        ansible_fqdn == "{{ vm_host_name }}.{{ fqdn }}"
