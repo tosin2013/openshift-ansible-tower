@@ -3,7 +3,7 @@
   tasks:
   - name: "Test node name"
     debug:
-      msg: "Conditional result: {{ item }}  inventory name {{inventory_hostname}}"
+      msg: "Conditional result: {{ item }}  inventory name {{ inventory_hostname }}"
     when:  inventory_hostname  is search("{{ item }}")
     with_items:
       "{{ node_names }}"
@@ -19,13 +19,17 @@
     lineinfile:
       state=present
       dest=/etc/hosts
-      line="{{ ansible_default_ipv4.address }} {{ vm_host_name }} {{ vm_host_name }}.{{ fqdn }}"
+      line="{{ ansible_default_ipv4.address }} {{ item }} {{ item }}.{{ fqdn }}"
       regexp="^{{ ansible_default_ipv4.address }}"
-    when:
-      ansible_fqdn != "{{ vm_host_name }}.{{ fqdn }}"
-  - name: Validate ansible_fqdn == inventory_hostname
+    when:  inventory_hostname  is search("{{ item }}")
+    with_items:
+      "{{ node_names }}"
+  - name: Validate ansible_fqdn ==  "{{ item }}.{{ fqdn }}"
     tags:
       - validate
     assert:
       that:
-        ansible_fqdn == "{{ vm_host_name }}.{{ fqdn }}"
+        ansible_fqdn == "{{ item }}.{{ fqdn }}"
+    when:  inventory_hostname  is search("{{ item }}")
+    with_items:
+      "{{ node_names }}"
