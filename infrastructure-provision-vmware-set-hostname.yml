@@ -1,11 +1,18 @@
 ---
 - hosts: all
   tasks:
+  - name: "Test node name"
+    debug:
+      msg: "Conditional result: {{ item }}  inventory name {{inventory_hostname}}"
+    when:  inventory_hostname  is search("{{ item }}")
+    with_items:
+      "{{ node_names }}"
   - name: Change the hostname to our standard
-  hostname:
-    name="{{ vm_host_name }}.{{ fqdn }}"
-  when:
-    ansible_fqdn != "{{ vm_host_name }}.{{ fqdn }}"
+    hostname:
+      name="{{ item }}.{{ fqdn }}"
+    when:  inventory_hostname  is search("{{ item }}")
+    with_items:
+      "{{ node_names }}"
   - name: Fix /etc/hosts removing the old hostname
     tags:
       - hosts
