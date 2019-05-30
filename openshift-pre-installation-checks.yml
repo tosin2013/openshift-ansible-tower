@@ -1,0 +1,14 @@
+- hosts: all
+  tasks:
+  - name: obtain the fully qualified domain name of the host
+    shell: hostname -f
+    with_items:
+      "{{ node_names }}"
+  - name: confirm that you can reach the each node in cluster
+    shell: {{ item }}.{{ fqdn }} -c 1
+    with_items:
+      "{{ node_names }}"
+  - name: Test {{ remote_registry }} dns setting 
+    shell: dig {{ remote_registry }} | grep A | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"
+    with_items:
+      "{{ node_names }}"
