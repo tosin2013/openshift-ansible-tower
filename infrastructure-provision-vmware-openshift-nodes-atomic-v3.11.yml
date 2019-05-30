@@ -75,10 +75,10 @@
       - sos
       - psacct
       state: present
-  - name: installing openshift-ansible RPM-based installer
+  - name: installing atomic-openshift-utils
     yum:
       name:
-      - openshift-ansible
+      - atomic
   - name: Install glusterfs-fuse
     yum:
       name:
