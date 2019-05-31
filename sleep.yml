@@ -1,0 +1,5 @@
+- hosts: all
+  tasks:
+  - name: pausing workflow for {{ timout_val }} minutes
+    pause:
+    minutes: "{{ timout_val }}"
