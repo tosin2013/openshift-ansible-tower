@@ -6,7 +6,9 @@
       "{{ node_names }}"
     ignore_errors: no
   - name: confirm that you can reach the each node in cluster
-    shell: "ping {{ item }}.{{ fqdn }} -c 1"
+    shell: | 
+       echo "Running on $(hostname)"
+       ping {{ item }}.{{ fqdn }} -c 1
     with_items:
       "{{ node_names }}"
     ignore_errors: no
@@ -15,3 +17,5 @@
     with_items:
       "{{ node_names }}"
     ignore_errors: no
+  - name: Force chrony time check
+    shell: chronyc -a makestep
