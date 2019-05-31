@@ -1,4 +1,5 @@
 - hosts: all
+  gather_facts: no
   tasks:
   - name: Check if port {{ port_num }} is listening
     wait_for:
