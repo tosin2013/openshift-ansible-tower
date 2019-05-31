@@ -4,6 +4,6 @@
     wait_for:
       port: "{{ port_num }}"
       delay: 5
-      timeout: 10
+      timeout: "{{ default_timeout }}"
       msg: "Timeout waiting for {{ port_num }}  to respond"
     ignore_errors: no
