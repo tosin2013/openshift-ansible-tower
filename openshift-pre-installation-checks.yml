@@ -17,5 +17,3 @@
     with_items:
       "{{ node_names }}"
     ignore_errors: no
-  - name: Force chrony time check
-    shell: chronyc -a makestep
