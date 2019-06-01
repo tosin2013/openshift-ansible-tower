@@ -19,7 +19,7 @@
     lineinfile:
       state=present
       dest=/etc/hosts
-      line="{{ ansible_default_ipv4.address }} {{ item }} {{ item }}.{{ fqdn }}"
+      line="127.0.0.1 {{ item }} {{ item }}.{{ fqdn }}"
       regexp="^{{ ansible_default_ipv4.address }}"
     when:  inventory_hostname  is search("{{ item }}")
     with_items:
