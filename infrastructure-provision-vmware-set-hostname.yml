@@ -24,12 +24,12 @@
     when:  inventory_hostname  is search("{{ item }}")
     with_items:
       "{{ node_names }}"
-  - name: Validate ansible_fqdn ==  "{{ item }}.{{ fqdn }}"
+  - name: Validate 127.0.1.1 ==  "{{ item }}.{{ fqdn }}"
     tags:
       - validate
     assert:
       that:
-        ansible_fqdn == "{{ item }}.{{ fqdn }}"
+        127.0.1.1  == "{{ item }}.{{ fqdn }}"
     when:  inventory_hostname  is search("{{ item }}")
     with_items:
       "{{ node_names }}"
