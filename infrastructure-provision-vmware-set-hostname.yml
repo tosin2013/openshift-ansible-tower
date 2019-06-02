@@ -1,5 +1,4 @@
 ---
-- hosts: all
   tasks:
   - name: "Test node name"
     debug:
@@ -24,15 +23,21 @@
     when:  inventory_hostname  is search("{{ item }}")
     with_items:
       "{{ node_names }}"
-###
-# Need to debug the lines below
-###
-#  - name: Validate ansible_fqdn ==  "{{ item }}.{{ fqdn }}"
-#    tags:
-#      - validate
-#    assert:
-#      that:
-#        ansible_fqdn == "{{ item }}.{{ fqdn }}"
-#    when:  inventory_hostname  is search("{{ item }}")
-#    with_items:
-#      "{{ node_names }}"
+  - name: restart machine
+    command: shutdown -r now "Ansible updates triggered"
+    async: 0
+    poll: 0
+    ignore_errors: True
+    when:
+      reboot is defined
+  - name: Waiting for server to come back up
+    local_action: wait_for host="{{ inventory_hostname }}" port=22 state=started
+  - name: Validate ansible_fqdn ==  "{{ item }}.{{ fqdn }}"
+    tags:
+      - validate
+    assert:
+      that:
+        ansible_fqdn == "{{ item }}.{{ fqdn }}"
+      when:  inventory_hostname  is search("{{ item }}")
+      with_items:
+        "{{ node_names }}"
