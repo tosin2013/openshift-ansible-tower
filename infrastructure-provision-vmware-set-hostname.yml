@@ -3,7 +3,7 @@
   tasks:
   - name: "Test node name"
     debug:
-      msg: "Conditional result: {{ item }}  inventory name {{ inventory_hostname }}"
+      msg: "Conditional result: {{ item }}  inventory name {{ inventory_hostname }} and {{ ansible_fqdn }}"
     when:  inventory_hostname  is search("{{ item }}")
     with_items:
       "{{ node_names }}"
@@ -17,10 +17,9 @@
     tags:
       - hosts
     lineinfile:
-      state=present
-      dest=/etc/hosts
-      line="127.0.1.1 {{ item }} {{ item }}.{{ fqdn }}"
-      regexp="^{{ ansible_default_ipv4.address }}"
+      path: /etc/hosts
+      line: "127.0.1.1 {{ item }} {{ item }}.{{ fqdn }}"
+      regexp: "^127.0.1.1"
     when:  inventory_hostname  is search("{{ item }}")
     with_items:
       "{{ node_names }}"
@@ -34,6 +33,16 @@
     wait_for_connection:
       delay: 30
       timeout: 60
+  - name: Collect only facts returned by ansible_fqdn
+    setup:
+      gather_subset:
+        - 'all'
+  - name: "Test node name after restart"
+    debug:
+      msg: "Conditional result: {{ item }}  inventory name {{ inventory_hostname }} and {{ ansible_fqdn }}"
+    when:  inventory_hostname  is search("{{ item }}")
+    with_items:
+      "{{ node_names }}"
   - name: Validate ansible_fqdn ==  "{{ item }}.{{ fqdn }}"
     tags:
       - validate
