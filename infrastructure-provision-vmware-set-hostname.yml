@@ -38,6 +38,6 @@
     assert:
       that:
         ansible_fqdn == "{{ item }}.{{ fqdn }}"
-      when:  inventory_hostname  is search("{{ item }}")
-      with_items:
-        "{{ node_names }}"
+    when:  inventory_hostname  is search("{{ item }}")
+    with_items:
+      "{{ node_names }}"
