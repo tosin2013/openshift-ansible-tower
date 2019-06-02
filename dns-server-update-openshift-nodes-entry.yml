@@ -6,6 +6,8 @@
     vm_ipaddress: "{{ vm_ip_address }}"
     return_content: true
   tasks:
+  - name: "Stagnate dns server update"
+    wait_for: timeout="{{ 20 | random }}"
   - name: Ansible check if {{ user_data_file }} exists.
     stat:
       path: "{{ user_data_file }}"

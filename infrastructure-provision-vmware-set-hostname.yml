@@ -1,4 +1,5 @@
 ---
+- hosts: all
   tasks:
   - name: "Test node name"
     debug:
