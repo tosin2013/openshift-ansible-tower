@@ -1,13 +1,17 @@
 ---
 - hosts: all
   tasks:
-  - block:
+  - name:  Register as auto-subscribe to red hat subscription.
+    block:
     - name: Register as auto-subscribe to red hat subscription.
       redhat_subscription:
         state: present
         username: "{{ rhel_username }}"
         password: "{{ rhel_password }}"
         auto_attach: true
+    when: registernodes
+  - name:  Register as auto-subscribe to red hat subscription.
+    block:
     - name: Disable all RHSM repositories
       rhsm_repository:
         name: '*'
@@ -92,4 +96,4 @@
       yum:
         name:
         - java-1.8.0-openjdk-devel.x86_64
-  when: installpackages
+    when: installpackages
