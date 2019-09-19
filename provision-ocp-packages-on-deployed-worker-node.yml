@@ -28,7 +28,7 @@
       rhsm_repository:
         name: rhel-7-fast-datapath-rpms
         state: enabled
-      when: 'lb' not in inventory_hostname
+      when: "'lb' not in inventory_hostname"
     - name: Enable rhel-7-server-ansible-2.6-rpms repository
       rhsm_repository:
         name: rhel-7-server-ansible-2.6-rpms
@@ -76,7 +76,7 @@
       yum:
         name:
           - docker-1.13.1
-      when: 'lb' not in inventory_hostname
+      when: "'lb' not in inventory_hostname"
     - name: create docker-storage-setup file
       copy:
         dest: "/etc/sysconfig/docker-storage-setup"
@@ -84,10 +84,10 @@
           STORAGE_DRIVER=overlay2
           DEVS={{ device }}
           VG=docker-vg
-      when: 'lb' not in inventory_hostname
+      when: "'lb' not in inventory_hostname"
     - name: Run  docker-storage-setup
       command: docker-storage-setup
-      when: 'lb' not in inventory_hostname
+      when: "'lb' not in inventory_hostname"
     - name: install java-1.8.0 packages
       yum:
         name:
