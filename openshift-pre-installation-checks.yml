@@ -5,15 +5,18 @@
     with_items:
       "{{ node_names }}"
     ignore_errors: no
+    when: "'localhost' not in inventory_hostname"
   - name: confirm that you can reach the each node in cluster
-    shell: | 
+    shell: |
        echo "Running on $(hostname)"
        ping {{ item }}.{{ fqdn }} -c 1
     with_items:
       "{{ node_names }}"
     ignore_errors: no
-  - name: Test {{ remote_registry }} dns setting 
+    when: "'localhost' not in inventory_hostname"
+  - name: Test {{ remote_registry }} dns setting
     shell: dig {{ remote_registry }} | grep A | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"
     with_items:
       "{{ node_names }}"
     ignore_errors: no
+    when: "'localhost' not in inventory_hostname"
