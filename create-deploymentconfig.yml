@@ -1,0 +1,4 @@
+- hosts: "{{ hostname }}"
+  tasks:
+  - name: Example play
+    shell: hostname -f
