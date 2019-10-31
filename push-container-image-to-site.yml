@@ -1,0 +1,6 @@
+- hosts: "{{ hostname }}"
+  tasks:
+  - name: Print List of remote sites
+    debug:
+      msg: "User {{ item.registry }} is {{ item.value.project }} ({{ item.value.container_image }})"
+    loop: "{{ lookup('dict', sites) }}"
