@@ -1,0 +1,4 @@
+- hosts: "{{ hostname }}"
+  tasks:
+  - name: obtain the fully qualified domain name of the host
+    shell: hostname -f
