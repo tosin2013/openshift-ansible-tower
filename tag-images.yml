@@ -1,0 +1,6 @@
+- hosts: "{{ hostname }}"
+  tasks:
+  - name: Switch to project
+    command: oc project "{{ project_name }}"
+  - name: Tag current image
+    command: oc tag "{{ current_build  }}" "{{ build_target  }}"
