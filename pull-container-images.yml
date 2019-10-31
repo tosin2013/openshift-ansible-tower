@@ -1,4 +1,14 @@
 - hosts: "{{ hostname }}"
   tasks:
-  - name: obtain the fully qualified domain name of the host
-    shell: hostname -f
+  - name: Switch to project
+    command: oc project "{{ project_name }}"
+  - name: Pull all images from project
+    command: docker pull  "{{ datacenter_repo }}/"{{ project_name }}"/{{ item }}"
+    with_items:
+      "{{ container_images }}"
+    when: not cleanup_images
+  - name: Remove all container images for project
+    command: docker rmi  "{{ datacenter_repo }}/"{{ project_name }}"/{{ item }}"
+    with_items:
+      "{{ container_images }}"
+    when: cleanup_images
