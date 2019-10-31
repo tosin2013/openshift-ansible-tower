@@ -2,5 +2,25 @@
   tasks:
   - name: Print List of remote sites
     debug:
-      msg: "User {{ item.registry }} is {{ item.value.project }} ({{ item.value.container_image }})"
+      msg: "Site: {{ item.key }}  Project: {{ item.value.project }} Registry: {{ item.value.registry }}"
+    loop: "{{ lookup('dict', sites) }}"
+  - name: Tag Docker images
+    command: echo "docker tag {{ datacenter_repo }}/{{ project_name }}/{{ container_image }} {{ item.value.registry }}/{{ item.value.project }}/{{ container_image }}"
+    loop: "{{ lookup('dict', sites) }}"
+  - name: Push Docker images
+    shell: "echo 'docker push {{ item.value.registry }}/{{ item.value.project }}/{{ container_image }}'; sleep  $(( $RANDOM % 60 + 1 ))"
+    loop: "{{ lookup('dict', sites) }}"
+    register: _push_images
+    async: 600
+    poll: 0
+  - name: Waiting for docker image to be pushed to site
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: _jobs
+    until: _jobs.finished
+    delay: 5  # Check every 5 seconds. Adjust as you like.
+    retries: 10  # Retry up to 10 times. Adjust as needed.
+    with_items: "{{ _push_images.results }}"
+  - name: Clean up docker images on local server
+    command: echo "docker rmi {{ item.value.registry }}/{{ item.value.project }}/{{ container_image }}"
     loop: "{{ lookup('dict', sites) }}"
