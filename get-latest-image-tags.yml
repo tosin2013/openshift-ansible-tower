@@ -1,0 +1,11 @@
+---
+- name: Get Tag for container image
+  shell: skopeo inspect  --authfile ~/.docker/config.json  docker://{{ datacenter_repo }}/{{ project_name }}/{{ item }} | /usr/local/bin/jq '.RepoTags | sort | last' | tr -d '"'
+  register: tagname
+
+- name: Save info to all_containers
+  vars:
+      tag: "{{ item }}:{{ tagname.stdout }}"
+  set_fact:
+    all_images: "{{ all_images|default([]) + [ tag ] }}"
+  ignore_errors: yes
