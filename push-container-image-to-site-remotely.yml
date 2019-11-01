@@ -1,5 +1,29 @@
 - hosts: "{{ hostname }}"
   tasks:
   - name: Get list of all container images for project
-    shell: docker images | grep {{ project_name }} | awk '{print $1,$2}' | tr -s ' ' ':'
+    shell: "docker images | grep {{ project_name }} | awk '{print $1,$2}' | tr -s ' ' ':'"
     register: tagname
+
+  - name: show all images
+    debug:
+      var: tagname.stdout_lines
+
+  - name: Push Docker images
+    shell: "docker push {{ item }}"
+    loop: "{{ tagname.stdout_lines }}"
+    register: _push_images
+    async: 600
+    poll: 0
+
+  - name: Waiting for docker image to be pushed to site
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: _jobs
+    until: _jobs.finished
+    delay: 5  # Check every 5 seconds. Adjust as you like.
+    retries: 10  # Retry up to 10 times. Adjust as needed.
+    with_items: "{{ _push_images.results }}"
+
+  - name: Clean up docker images on local server
+    command: "docker rmi {{ item }}"
+    loop: "{{ tagname.stdout_lines }}"
