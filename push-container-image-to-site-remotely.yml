@@ -1,0 +1,5 @@
+- hosts: "{{ hostname }}"
+  tasks:
+  - name: Get list of all container images for project
+    shell: docker images | grep {{ project_name }} | awk '{print $1,$2}' | tr -s ' ' ':'
+    register: tagname
