@@ -1,4 +1,26 @@
 - hosts: "{{ hostname }}"
+  vars:
+    project_name: coolstore-dev
+    application_name: coolstore
   tasks:
-  - name: Example play
-    shell: hostname -f
+  - name: List Template
+    shell: "oc get template/{{ application_name }}"
+    register: oc_get_template
+    ignore_errors: true
+  
+  - name: Copy Template
+    copy:
+      src: "templates/{{ application_name }}.yml"
+      dest: "/tmp/{{ application_name }}.yml"
+    when: oc_get_template.rc == 1
+  
+  - name: Create Template
+    shell: "oc create -f /tmp/{{ application_name }}.yml"
+    when: oc_get_template.rc == 1
+
+  # TODO: This should actually check for the application, not just the
+  # template existence.
+  - name: Deploy Application
+    shell: "oc new-app {{ application_name }}"
+    when: oc_get_template.rc == 1
+

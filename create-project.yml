@@ -1,4 +1,12 @@
 - hosts: "{{ hostname }}"
+  vars:
+    project_name: coolstore-dev
   tasks:
-  - name: Example play
-    shell: hostname -f
+  - name: List Projects
+    shell: "oc get projects/{{ project_name }}"
+    register: oc_get_project
+    ignore_errors: true
+
+  - name: 'Create Project'
+    command: "oc new-project {{ project_name }}"
+    when: oc_get_project.rc == 1
