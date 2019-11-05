@@ -23,15 +23,6 @@ objects:
     name: default
 # UI
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: web-ui
-    labels:
-      app: web-ui
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: web-ui
@@ -57,7 +48,7 @@ objects:
             value: coolstore-gw
           - name: HOSTNAME_HTTP
             value: web-ui:8080
-          image: web-ui
+          image: docker-registry.default.svc:5000/coolstore/web-ui:latest
           imagePullPolicy: Always
           name: web-ui
           ports:
@@ -123,15 +114,6 @@ objects:
       name: web-ui
 # Coolstore Gateway
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: coolstore-gw
-    labels:
-      app: coolstore-gw
-  spec: {}
-  status:
-    dockerImageRepository: ""
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: coolstore-gw
@@ -157,7 +139,7 @@ objects:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          image: library/coolstore-gw:latest
+          image: docker-registry.default.svc:5000/coolstore/coolstore-gw:latest
           livenessProbe:
             httpGet:
               path: /health
@@ -213,15 +195,6 @@ objects:
       name: coolstore-gw
 # Inventory Service
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: inventory
-    labels:
-      app: inventory
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: inventory
@@ -265,7 +238,7 @@ objects:
             value: ${INVENTORY_DB_PASSWORD}
           - name: DB_DATABASE
             value: inventorydb
-          image: inventory
+          image: docker-registry.default.svc:5000/coolstore/inventory:latest
           imagePullPolicy: Always
           lifecycle:
             preStop:
@@ -421,15 +394,6 @@ objects:
       deploymentconfig: inventory-postgresql
 # Catalog Service
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: catalog
-    labels:
-      app: catalog
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: catalog
@@ -463,7 +427,7 @@ objects:
             value: catalogdb
           - name: DB_SERVER
             value: catalog-mongodb
-          image: catalog
+          image: docker-registry.default.svc:5000/coolstore/catalog:latest
           imagePullPolicy: Always
           name: catalog
           ports:
@@ -631,15 +595,6 @@ objects:
     - type: ConfigChange
 # Cart Service
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: cart
-    labels:
-      app: cart
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: cart
@@ -671,7 +626,7 @@ objects:
             value: ${KIE_SERVER_USER}
           - name: KIE_SERVER_PASSWORD
             value: ${KIE_SERVER_PASSWORD}
-          image: cart
+          image: docker-registry.default.svc:5000/coolstore/cart:latest
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 10
@@ -739,15 +694,6 @@ objects:
       deploymentconfig: cart
 # Review Service
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: review
-    labels:
-      app: review
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: review
@@ -778,7 +724,7 @@ objects:
           volumeMounts:
             - name: config
               mountPath: /app/config
-          image: review
+          image: docker-registry.default.svc:5000/coolstore/review:latest
           imagePullPolicy: Always
           name: review
           ports:
