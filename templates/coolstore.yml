@@ -48,7 +48,7 @@ objects:
             value: coolstore-gw
           - name: HOSTNAME_HTTP
             value: web-ui:8080
-          image: web-ui:latest
+          image: web-ui:{{ lifecycle }}
           imagePullPolicy: Always
           name: web-ui
           ports:
@@ -87,7 +87,7 @@ objects:
         - web-ui
         from:
           kind: ImageStreamTag
-          name: web-ui:latest
+          name: web-ui:{{ lifecycle }}
           namespace: coolstore
       type: ImageChange
     - type: ConfigChange
@@ -140,7 +140,7 @@ objects:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          image: coolstore-gw:latest
+          image: coolstore-gw:{{ lifecycle }}
           livenessProbe:
             httpGet:
               path: /health
@@ -167,7 +167,7 @@ objects:
         - coolstore-gw
         from:
           kind: ImageStreamTag
-          name: coolstore-gw:latest
+          name: coolstore-gw:{{ lifecycle }}
           namespace: coolstore
       type: ImageChange
     - type: ConfigChange
@@ -240,7 +240,7 @@ objects:
             value: ${INVENTORY_DB_PASSWORD}
           - name: DB_DATABASE
             value: inventorydb
-          image: inventory:latest
+          image: inventory:{{ lifecycle }}
           imagePullPolicy: Always
           lifecycle:
             preStop:
@@ -297,7 +297,7 @@ objects:
         - inventory
         from:
           kind: ImageStreamTag
-          name: inventory:latest
+          name: inventory:{{ lifecycle }}
           namespace: coolstore
       type: ImageChange
     - type: ConfigChange
@@ -430,7 +430,7 @@ objects:
             value: catalogdb
           - name: DB_SERVER
             value: catalog-mongodb
-          image: catalog:latest
+          image: catalog:{{ lifecycle }}
           imagePullPolicy: Always
           name: catalog
           ports:
@@ -469,7 +469,7 @@ objects:
         - catalog
         from:
           kind: ImageStreamTag
-          name: catalog:latest
+          name: catalog:{{ lifecycle }}
           namespace: coolstore
       type: ImageChange
     - type: ConfigChange
@@ -630,7 +630,7 @@ objects:
             value: ${KIE_SERVER_USER}
           - name: KIE_SERVER_PASSWORD
             value: ${KIE_SERVER_PASSWORD}
-          image: cart:latest
+          image: cart:{{ lifecycle }}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 10
@@ -680,7 +680,7 @@ objects:
         - cart
         from:
           kind: ImageStreamTag
-          name: cart:latest
+          name: cart:{{ lifecycle }}
           namespace: coolstore
       type: ImageChange
     - type: ConfigChange
@@ -729,7 +729,7 @@ objects:
           volumeMounts:
             - name: config
               mountPath: /app/config
-          image: review:latest
+          image: review:{{ lifecycle }}
           imagePullPolicy: Always
           name: review
           ports:
@@ -783,7 +783,7 @@ objects:
         - review
         from:
           kind: ImageStreamTag
-          name: review:latest
+          name: review:{{ lifecycle }}
           namespace: coolstore
       type: ImageChange
     - type: ConfigChange

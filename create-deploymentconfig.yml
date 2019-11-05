@@ -9,7 +9,7 @@
     ignore_errors: true
   
   - name: Copy Template
-    copy:
+    template:
       src: "templates/{{ application_name }}.yml"
       dest: "/tmp/{{ application_name }}.yml"
     when: oc_get_template.rc == 1
