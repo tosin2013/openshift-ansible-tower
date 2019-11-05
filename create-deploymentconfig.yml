@@ -1,7 +1,7 @@
 - hosts: masters[0]
   vars:
-    project_name: coolstore-dev
     application_name: coolstore
+    lifecycle: dev
   tasks:
   - name: List Template
     shell: "oc get template/{{ application_name }}"
@@ -15,12 +15,12 @@
     when: oc_get_template.rc == 1
   
   - name: Create Template
-    shell: "oc create -f /tmp/{{ application_name }}.yml"
+    shell: "oc create -f /tmp/{{ application_name }}.yml -n {{ application_name }}-{{ lifecycle }}"
     when: oc_get_template.rc == 1
 
   # TODO: This should actually check for the application, not just the
   # template existence.
   - name: Deploy Application
-    shell: "oc new-app {{ application_name }}"
+    shell: "oc new-app {{ application_name }} -n {{ application_name }}-{{ lifecycle }}"
     when: oc_get_template.rc == 1
 

@@ -1,12 +1,16 @@
 - hosts: masters[0]
   vars:
-    project_name: coolstore-dev
+    application_name: coolstore
+    lifecycle: dev
   tasks:
   - name: List Projects
-    shell: "oc get projects/{{ project_name }}"
+    shell: "oc get projects/{{ application_name }}-{{ lifecycle }}"
     register: oc_get_project
     ignore_errors: true
 
   - name: 'Create Project'
-    command: "oc new-project {{ project_name }}"
+    command: "oc new-project {{ application_name }}-{{ lifecycle }}"
     when: oc_get_project.rc == 1
+  
+  - name: 'Assign Permissions'
+    command: "oc policy add-role-to-user system:image-puller system:serviceaccount:{{ application_name }}-{{ lifecycle }}:default --namespace {{ application_name }}
