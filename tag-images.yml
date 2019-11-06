@@ -2,12 +2,10 @@
   vars:
     application_name: coolstore
     lifecycle: dev
+    image: cart
+    tag_from: latest
+    tag_to: dev
   tasks:
-  - name: Get all images
-    command: "oc get is -n {{ application_name }} | awk '{print $1}' | grep -v 'NAME'"
-    register: images
+  - name: Tag Image
+    command: "oc tag {{ image }}:{{ tag_from }} {{ image }}:{{ tag_to }} -n {{ application_name }}"
 
-  - name: Tag latest image to lifecycle
-    command: "oc tag {{ item }}:latest {{ item }}:{{ lifecycle }}"
-    with_items:
-      - "{{ images.stdout_lines }}"
