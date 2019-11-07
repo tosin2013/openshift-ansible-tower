@@ -1,0 +1,13 @@
+- hosts: "{{ hostname }}"
+  tasks:
+  - name: Switch to project
+    command: oc project "{{ project_name }}"
+  - name: Build image
+    command:  oc start-build "{{ build_name }}" --wait
+    when: trigger_build
+  - name: Tag current image
+    command: oc tag "{{ current_build  }}" "{{ build_target  }}"
+    when:  not remove_tag
+  - name: Remove image tag
+    command: oc tag -d "{{ build_target  }}"
+    when: remove_tag
