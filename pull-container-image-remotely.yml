@@ -1,7 +1,30 @@
-- hosts: "{{ hostname }}"
+- hosts: masters[0]
+  vars:
+    project_name: coolstore
+    datacenter_repo: registry.apps.ocpmcmhub1.net
+    cleanup_images: false
+    container_images: cart
+    target_registry: docker-registry-default.apps.ocpsite2.net
   tasks:
   - name: Verify jq is installed
     command: /usr/local/bin/jq --version
+
+  - name: Determine route for local registry
+    shell: "oc get routes/docker-registry -n default | grep docker-registry | awk '{print $2}'"
+    register: oc_get_routes
+
+  - name: List Projects
+    shell: "oc get projects/{{ project_name }}"
+    register: oc_get_project
+    ignore_errors: true
+
+  - name: 'Create Project'
+    command: "oc new-project {{ project_name }}"
+    when: oc_get_project.rc == 1
+
+  - name: Inspect remote container images
+    command: "skopeo inspect  --authfile ~/.docker/config.json  docker://{{ datacenter_repo }}/{{ project_name }}/{{ item }}"
+    with_items: "{{ container_images }}"
 
   - name: Get a list of all latest images
     include_tasks: get-latest-image-tags.yml

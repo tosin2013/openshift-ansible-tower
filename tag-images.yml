@@ -1,13 +1,11 @@
-- hosts: "{{ hostname }}"
+- hosts: masters[0]
+  vars:
+    application_name: coolstore
+    lifecycle: dev
+    image: cart
+    tag_from: latest
+    tag_to: dev
   tasks:
-  - name: Switch to project
-    command: oc project "{{ project_name }}"
-  - name: Build image
-    command:  oc start-build "{{ build_name }}" --wait
-    when: trigger_build
-  - name: Tag current image
-    command: oc tag "{{ current_build  }}" "{{ build_target  }}"
-    when:  not remove_tag
-  - name: Remove image tag
-    command: oc tag -d "{{ build_target  }}"
-    when: remove_tag
+  - name: Tag Image
+    command: "oc tag {{ image }}:{{ tag_from }} {{ image }}:{{ tag_to }} -n {{ application_name }}"
+

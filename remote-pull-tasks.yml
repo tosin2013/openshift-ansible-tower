@@ -3,7 +3,7 @@
   shell: |
     skopeo copy docker://{{ datacenter_repo }}/{{ project_name }}/{{ item }} docker-daemon:{{ target_registry }}/{{ project_name }}/{{ item }}
   loop: "{{ all_images }}"
-  register: _push_images
+  register: _pulled_images
   async: 600
   poll: 0
 
@@ -14,4 +14,21 @@
   until: _jobs.finished
   delay: 5  # Check every 5 seconds. Adjust as you like.
   retries: 30  # Retry up to 30 times. Adjust as needed.
-  with_items: "{{ _push_images.results }}"
+  with_items: "{{ _pulled_images.results }}"
+  
+- name: Tag image into the namespace
+  command: docker push {{ target_registry }}/{{ project_name }}/{{ item }}
+  loop: "{{ all_images }}"
+  register: _pushed_images
+  async: 600
+  poll: 0
+
+- name: Waiting for container image to be pushed to site
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: _jobs
+  until: _jobs.finished
+  delay: 5  # Check every 5 seconds. Adjust as you like.
+  retries: 30  # Retry up to 30 times. Adjust as needed.
+  with_items: "{{ _pushed_images.results }}"
+
