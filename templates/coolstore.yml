@@ -23,15 +23,6 @@ objects:
     name: default
 # UI
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: web-ui
-    labels:
-      app: web-ui
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: web-ui
@@ -57,7 +48,7 @@ objects:
             value: coolstore-gw
           - name: HOSTNAME_HTTP
             value: web-ui:8080
-          image: web-ui
+          image: web-ui:{{ lifecycle }}
           imagePullPolicy: Always
           name: web-ui
           ports:
@@ -96,7 +87,8 @@ objects:
         - web-ui
         from:
           kind: ImageStreamTag
-          name: web-ui:latest
+          name: web-ui:{{ lifecycle }}
+          namespace: coolstore
       type: ImageChange
     - type: ConfigChange
 - apiVersion: v1
@@ -123,15 +115,6 @@ objects:
       name: web-ui
 # Coolstore Gateway
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: coolstore-gw
-    labels:
-      app: coolstore-gw
-  spec: {}
-  status:
-    dockerImageRepository: ""
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: coolstore-gw
@@ -157,7 +140,7 @@ objects:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          image: library/coolstore-gw:latest
+          image: coolstore-gw:{{ lifecycle }}
           livenessProbe:
             httpGet:
               path: /health
@@ -184,7 +167,8 @@ objects:
         - coolstore-gw
         from:
           kind: ImageStreamTag
-          name: coolstore-gw:latest
+          name: coolstore-gw:{{ lifecycle }}
+          namespace: coolstore
       type: ImageChange
     - type: ConfigChange
 - apiVersion: v1
@@ -212,15 +196,6 @@ objects:
       kind: Service
       name: coolstore-gw
 # Inventory Service
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: inventory
-    labels:
-      app: inventory
-  spec:
-    tags:
-    - name: latest
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -265,7 +240,7 @@ objects:
             value: ${INVENTORY_DB_PASSWORD}
           - name: DB_DATABASE
             value: inventorydb
-          image: inventory
+          image: inventory:{{ lifecycle }}
           imagePullPolicy: Always
           lifecycle:
             preStop:
@@ -322,7 +297,8 @@ objects:
         - inventory
         from:
           kind: ImageStreamTag
-          name: inventory:latest
+          name: inventory:{{ lifecycle }}
+          namespace: coolstore
       type: ImageChange
     - type: ConfigChange
 - apiVersion: v1
@@ -421,15 +397,6 @@ objects:
       deploymentconfig: inventory-postgresql
 # Catalog Service
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: catalog
-    labels:
-      app: catalog
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: catalog
@@ -463,7 +430,7 @@ objects:
             value: catalogdb
           - name: DB_SERVER
             value: catalog-mongodb
-          image: catalog
+          image: catalog:{{ lifecycle }}
           imagePullPolicy: Always
           name: catalog
           ports:
@@ -502,7 +469,8 @@ objects:
         - catalog
         from:
           kind: ImageStreamTag
-          name: catalog:latest
+          name: catalog:{{ lifecycle }}
+          namespace: coolstore
       type: ImageChange
     - type: ConfigChange
 - apiVersion: v1
@@ -631,15 +599,6 @@ objects:
     - type: ConfigChange
 # Cart Service
 - apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: cart
-    labels:
-      app: cart
-  spec:
-    tags:
-    - name: latest
-- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: cart
@@ -671,7 +630,7 @@ objects:
             value: ${KIE_SERVER_USER}
           - name: KIE_SERVER_PASSWORD
             value: ${KIE_SERVER_PASSWORD}
-          image: cart
+          image: cart:{{ lifecycle }}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 10
@@ -721,7 +680,8 @@ objects:
         - cart
         from:
           kind: ImageStreamTag
-          name: cart:latest
+          name: cart:{{ lifecycle }}
+          namespace: coolstore
       type: ImageChange
     - type: ConfigChange
 - apiVersion: v1
@@ -738,15 +698,6 @@ objects:
     selector:
       deploymentconfig: cart
 # Review Service
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    name: review
-    labels:
-      app: review
-  spec:
-    tags:
-    - name: latest
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -778,7 +729,7 @@ objects:
           volumeMounts:
             - name: config
               mountPath: /app/config
-          image: review
+          image: review:{{ lifecycle }}
           imagePullPolicy: Always
           name: review
           ports:
@@ -832,7 +783,8 @@ objects:
         - review
         from:
           kind: ImageStreamTag
-          name: review:latest
+          name: review:{{ lifecycle }}
+          namespace: coolstore
       type: ImageChange
     - type: ConfigChange
 - apiVersion: v1
