@@ -3,9 +3,20 @@
   shell: skopeo inspect  --authfile ~/.docker/config.json  docker://{{ datacenter_repo }}/{{ project_name }}/{{ item }} | /usr/local/bin/jq '.RepoTags | sort | last' | tr -d '"'
   register: tagname
 
-- name: Save info to all_containers
+
+- name: Save info with latest tag to all_containers
   vars:
       tag: "{{ item }}:{{ tagname.stdout }}"
   set_fact:
     all_images: "{{ all_images|default([]) + [ tag ] }}"
   ignore_errors: yes
+  when: '":" not in item'
+
+
+- name: Save info with custom tag to all_containers
+  vars:
+      tag: "{{ item }}"
+  set_fact:
+    all_images: "{{ all_images|default([]) + [ tag ] }}"
+  ignore_errors: yes
+  when: item  is regex("(\d+\.)(\d+\.)(\d+)")

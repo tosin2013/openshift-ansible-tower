@@ -2,13 +2,14 @@
   tasks:
   - name: Verify jq is installed
     command: /usr/local/bin/jq --version
-  - name: Inspect remote container images
-    command: "skopeo inspect  --authfile ~/.docker/config.json  docker://{{ datacenter_repo }}/{{ project_name }}/{{ item }}"
-    with_items: "{{ container_images }}"
 
   - name: Get a list of all latest images
     include_tasks: get-latest-image-tags.yml
     loop: "{{ container_images }}"
+
+  - name: Inspect remote container images
+    command: "skopeo inspect  --authfile ~/.docker/config.json  docker://{{ datacenter_repo }}/{{ project_name }}/{{ item }}"
+    with_items: "{{ all_images }}"
 
   - name: show latest images
     debug:

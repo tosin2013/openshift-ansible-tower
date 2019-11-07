@@ -1,4 +1,18 @@
-- hosts: "{{ hostname }}"
-  tasks:
-  - name: Example play
-    shell: hostname -f
+- name: Get list of all container images for project
+  shell: "docker images | grep {{ project_name }} | awk '{print $1,$2}' | tr -s ' ' ':'"
+  register: remoteimagestag
+- name: Get list of all container images for project
+  shell: "docker images | grep {{ project_name }}  | sed 's/{{ project_name }}/{{ application_name }}-{{ lifecycle }}/g'  | awk '{print $1,$2}' | tr -s ' ' ':'"
+  register: customtaggedimage
+- debug:
+   msg: "outer {{ item[1] }} and {{ item[0] }}"
+  with_nested:
+    - "{{ remoteimagestag.stdout_lines  }}"
+    - "{{ customtaggedimage.stdout_lines }}"
+  when:  "(item[0] | search('{{ app_name }}') and item[1] | search('{{ app_name }}') )"
+- name: Get list of all container images for project
+  shell: "docker tag {{ item[0] }}  {{ item[1] }}"
+  with_nested:
+    - "{{ remoteimagestag.stdout_lines  }}"
+    - "{{ customtaggedimage.stdout_lines }}"
+  when:  "(item[0] | search('{{ app_name }}') and item[1] | search('{{ app_name }}') )"
