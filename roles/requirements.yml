@@ -17,3 +17,11 @@
 # Simple Role to coonfigure chrony
 - src: https://github.com/tosin2013/ansible-role-chrony
   name: ansible-role-chrony
+
+# Simple Role to coonfigure chrony
+- src: https://github.com/tosin2013/ocp4-upi-helpernode
+  name: ocp4-upi-helpernode
+
+# Simple Role to coonfigure chrony
+- src: https://github.com/tosin2013/ocp4-vsphere-upi-automation
+  name: ocp4-vsphere-upi-automation
