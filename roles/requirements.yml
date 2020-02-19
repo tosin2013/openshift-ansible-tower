@@ -1,26 +1,18 @@
-# from galaxy
-- src: yatesr.timezone
-
 # vmware-provision code
 - src: https://github.com/tosin2013/vmware-provision
   name: vmware-provision
 
-# Sets up ISC BIND on RHEL/CentOS 7, Ubuntu 16.04/18.04, Debian 8/9, or Arch Linux as an authoritative DNS server
-- src: https://github.com/tosin2013/ansible-role-bind
-  name: ansible-role-bind
-
 # Simple Role to Setup Ansible Tower by Red Hat.
-- src: https://github.com/tosin2013/ansible-role-tower-setup
-  name: ansible-role-tower-setup
-
+#- src: https://github.com/tosin2013/ansible-role-tower-setup
+#  name: ansible-role-tower-setup
 
 # Simple Role to coonfigure chrony
-- src: https://github.com/tosin2013/ansible-role-chrony
-  name: ansible-role-chrony
+#- src: https://github.com/tosin2013/ansible-role-chrony
+#  name: ansible-role-chrony
 
 # OpenShift helper Ndoe
-- src: https://github.com/tosin2013/ocp4-upi-helpernode
-  name: ocp4-upi-helpernode
+#- src: https://github.com/tosin2013/ocp4-upi-helpernode
+#  name: ocp4-upi-helpernode
 
 # ocp4-vsphere-upi-automation
 #- src: https://github.com/tosin2013/ocp4-vsphere-upi-automation
