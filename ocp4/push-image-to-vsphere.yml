@@ -19,7 +19,7 @@
       hostname: '{{ vcenter_hostname }}'
       username: '{{ vcenter_username }}'
       password: '{{ vcenter_password }}'
-      src:  "/tmp/{{ iso_name }}"
+      src:  "{{ webserver_url }}/{{ iso_name }}"
       datacenter: "{{ datacenter }}"
       datastore: "{{ datastore }}"
       path: "{{ folder_name}}/{{ iso_name }}"
