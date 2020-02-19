@@ -4,11 +4,13 @@
     get_url:
       url: "{{ webserver_url }}/{{ iso_name }}"
       dest: "{{ playbook_dir }}/{{ iso_name }}"
-  - name: List /opt directory 
-    command: "ls /opt"
+
+  - name: List playbook directory 
+    command: "ls {{ playbook_dir }}"
     register: dir_out 
 
-  - debug: var={{item}}
+  - debug:
+    msg: Copied iso to {{ item }} 
     with_items: dir_out.stdout_lines
 
   - name: Copy file to datastore using delegate_to
@@ -19,5 +21,5 @@
       src:  "{{ playbook_dir }}/{{ iso_name }}"
       datacenter: "{{ datacenter }}"
       datastore: "{{ datastore }}"
-      path: "{{ folder_name}}//{{ iso_name }}"
+      path: "{{ folder_name}}/{{ iso_name }}"
     delegate_to: localhost
