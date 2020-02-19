@@ -3,10 +3,10 @@
   - name: Download helpernode iso file
     get_url:
       url: "{{ webserver_url }}/{{ iso_name }}"
-      dest: "{{ playbook_dir }}/{{ iso_name }}"
+      dest: "/home/{{user_dir}}/.ansible/tmp/{{ iso_name }}"
 
   - name: List playbook directory 
-    command: "ls {{ playbook_dir }}/"
+    command: "ls /home/{{user_dir}}/.ansible/tmp/"
     register: dir_out 
 
   - debug:
@@ -18,7 +18,7 @@
       hostname: '{{ vcenter_hostname }}'
       username: '{{ vcenter_username }}'
       password: '{{ vcenter_password }}'
-      src:  "{{ playbook_dir }}/{{ iso_name }}"
+      src:  "/home/{{user_dir}}/.ansible/tmp/{{ iso_name }}"
       datacenter: "{{ datacenter }}"
       datastore: "{{ datastore }}"
       path: "{{ folder_name}}/{{ iso_name }}"
