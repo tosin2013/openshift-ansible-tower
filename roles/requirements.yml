@@ -11,8 +11,8 @@
 #  name: ansible-role-chrony
 
 # OpenShift helper Ndoe
-#- src: https://github.com/tosin2013/ocp4-upi-helpernode
-#  name: ocp4-upi-helpernode
+- src: https://github.com/tosin2013/ocp4-upi-helpernode
+  name: ocp4-upi-helpernode
 
 # ocp4-vsphere-upi-automation
 #- src: https://github.com/tosin2013/ocp4-vsphere-upi-automation
