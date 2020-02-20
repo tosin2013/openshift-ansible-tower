@@ -1,0 +1,4 @@
+---
+- hosts: all
+  roles:
+  - ocp4-upi-helpernode
