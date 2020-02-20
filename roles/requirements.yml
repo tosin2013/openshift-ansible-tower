@@ -13,6 +13,7 @@
 # OpenShift helper Ndoe
 - src: https://github.com/tosin2013/ocp4-upi-helpernode
   name: ocp4-upi-helpernode
+  version: ansible-tower
 
 # ocp4-vsphere-upi-automation
 #- src: https://github.com/tosin2013/ocp4-vsphere-upi-automation
