@@ -6,7 +6,7 @@
       url: "{{ webserver_url }}/{{ file_name }}"
       dest: "/tmp/{{ file_name }}"
 
-  - name: Copy file to datastore using vcenter datastore
+  - name: "Copy {{ file_name }} to  vcenter datastore"
     vsphere_copy:
       hostname: '{{ vcenter_hostname }}'
       username: '{{ vcenter_username }}'
