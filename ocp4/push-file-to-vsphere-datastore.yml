@@ -9,7 +9,9 @@
   - name: "Get  {{ file_name }} sha information"
     stat:
       path: "/tmp/{{ file_name }}"
+      checksum_algorithm: sha1
     register: file_name_sha
+    failed_when: file_sha != item.stat.checksum
 
   - name: 
     debug: 
@@ -17,8 +19,8 @@
 
   - name:
     debug:
-      msg: "Path exists and isn't a symlink"
-    when: file_name_sha.stat.islnk is defined and file_name_sha.stat.islnk == file_sha
+      msg: "SHA Does not match"
+    when: file_name_sha.stat.islnk != file_sha
 
   - name: "Copy {{ file_name }} to  vcenter datastore"
     vsphere_copy:
