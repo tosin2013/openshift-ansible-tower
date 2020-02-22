@@ -1,10 +1,10 @@
 - hosts: all
   become: false
   tasks:
-  - name: Download helpernode iso file
+  - name: "Download {{ file_name }}"
     get_url:
-      url: "{{ webserver_url }}/{{ iso_name }}"
-      dest: "/tmp/{{ iso_name }}"
+      url: "{{ webserver_url }}/{{ file_name }}"
+      dest: "/tmp/{{ file_name }}"
 
   - name: Copy file to datastore using vcenter datastore
     vsphere_copy:
@@ -12,8 +12,8 @@
       username: '{{ vcenter_username }}'
       password: '{{ vcenter_password }}'
       validate_certs: '{{ vm_validate_certs }}'
-      src:  "/tmp/{{ iso_name }}"
+      src:  "/tmp/{{ file_name }}"
       datacenter: "{{ datacenter }}"
       datastore: "{{ datastore }}"
-      path: "{{ folder_name}}/{{ iso_name }}"
+      path: "{{ folder_name}}/{{ file_name }}"
     delegate_to: localhost
