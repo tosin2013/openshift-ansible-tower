@@ -20,8 +20,8 @@
 
   - name:
     debug:
-      msg: "SHA Does not match"
-    when: file_name_sha.stat.islnk != file_sha
+      msg: "SHA256 matches"
+    when: file_name_sha.stat.checksum == file_sha
 
   - name: "Copy {{ file_name }} to  vcenter datastore"
     vsphere_copy:
