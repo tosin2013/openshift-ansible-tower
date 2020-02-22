@@ -9,7 +9,7 @@
         datacenter: '{{ vmware_datastore }}'
         cluster: '{{ vmware_cluster }}'
         datastore: '{{ vmware_datacenter }}'
-        name: '{{ vm_name }}'
+        name: '{{ vmware_new_hostname }}'
         networks: "{u'VM Network':u'{{ vmware_network }}'}"
         validate_certs: no
         power_on: no
