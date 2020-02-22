@@ -9,7 +9,7 @@
   - name: "Get  {{ file_name }} sha information"
     stat:
       path: "/tmp/{{ file_name }}"
-      checksum_algorithm: sha1
+      checksum_algorithm: sha256
     register: file_name_sha
    
 
@@ -17,7 +17,7 @@
     debug: 
       var: file_name_sha
     failed_when: file_sha != file_name_sha.stat.checksum
-    
+
   - name:
     debug:
       msg: "SHA Does not match"
