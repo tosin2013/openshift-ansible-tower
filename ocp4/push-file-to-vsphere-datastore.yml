@@ -11,12 +11,13 @@
       path: "/tmp/{{ file_name }}"
       checksum_algorithm: sha1
     register: file_name_sha
-    failed_when: file_sha != item.stat.checksum
+   
 
   - name: 
     debug: 
       var: file_name_sha
-
+    failed_when: file_sha != file_name_sha.stat.checksum
+    
   - name:
     debug:
       msg: "SHA Does not match"
