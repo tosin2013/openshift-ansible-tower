@@ -1,0 +1,12 @@
+- name: Remove all openshift vms
+  hosts: all
+  gather_facts: no
+
+  tasks:
+  - name: Power On Master Nodes
+    include: infrastructure-delete-vmware-virtual-machine.yml
+    loop: "{{ masters }}"
+
+  - name: Power On Worker Nodes
+    include: infrastructure-delete-vmware-virtual-machine.yml
+    loop: "{{ workers }}"
