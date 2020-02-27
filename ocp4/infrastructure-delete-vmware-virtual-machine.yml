@@ -6,14 +6,19 @@
   tasks: 
   - name: Poweroff {{ vm_name }} virtual machine
     vmware_guest:
-      hostname: "{{ vmware_datacenter }}"
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      datacenter: "{{ vmware_datacenter }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ vm_name }}"
       state: poweredoff
   - name: Removing {{ vm_name }} virtual machine
     vmware_guest:
-      hostname: "{{ vmware_datacenter }}"
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ vm_name }}"
