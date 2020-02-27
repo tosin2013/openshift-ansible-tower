@@ -86,8 +86,8 @@ Prompt: | Enter RHEL Password
 --|--
 Description:  |   
 Answer Variable Name:  | rhel_password  
-Answer Type: Password  |  
-Default Answer: changeme  |  
+Answer Type:  | Password  
+Default Answer: |changeme    
 
 Prompt:| Would you like to use static ips?  
 --|--
@@ -95,7 +95,7 @@ Description:  |
 Answer Variable Name: |staticips  
 Answer Type: | Multiple Choice (single select)  
 OPTIONS:  | - true  
-        | - false  
+Cont... | - false  
 Default Answer: | false
 
 
@@ -105,7 +105,7 @@ Description: |
 Answer Variable Name:  | configuredns  
 Answer Type: Multiple Choice (single select)   
 Options: |- true
-        |  - false  
+Cont...     |  - false  
 Default Answer: |false  
 
 Prompt: | Would you like to configure haproxy?  
@@ -114,7 +114,7 @@ Description: |
 Answer Variable Name: | configure_haproxy  
 Answer Type: | Multiple Choice (single select)   
 Options: |- true  
-| - false  
+Cont... | - false  
 Default Answer: | false  
 
 Prompt: |  Would you like to configure nfs provisioner?
@@ -123,5 +123,5 @@ Description: |
 Answer Variable Name: | configure_nfs_provisioner  
 Answer Type: | Multiple Choice (single select)   
 Options: |- true  
- | - false  
+Cont... | - false  
 Default Answer: | false  
