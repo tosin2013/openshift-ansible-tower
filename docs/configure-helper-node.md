@@ -72,57 +72,56 @@ ocp_installer: >-
   https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0/openshift-install-linux-4.3.0.tar.gz
 ```
 
-**Survey Menu**
+**Survey Menu**  
 
-Prompt: Enter RHEL Username  
-Description:  
-Answer Variable Name: rhel_username  
-Answer Type: Text  
-Default Answer: rhel_username  
-
-Prompt: Enter RHEL Password  
-Description:  
-Answer Variable Name: rhel_password  
-Answer Type: Password  
-Default Answer: changeme  
-
-Prompt:  Would you like to use static ips?  
-Description:  
-Answer Variable Name: staticips  
-Answer Type:  Multiple Choice (single select)  
-OPTIONS:  
- - true  
- - false  
-
-Default Answer:  false
+Prompt:  |   Enter RHEL Username  
+--|--
+Description:  |  
+Answer Variable Name:  |  rhel_username
+Answer Type:   |  
+Default Answer: | rhel_username
 
 
-Prompt:  Would you like to configure DNS?  
-Description:
-Answer Variable Name: configuredns  
+Prompt: | Enter RHEL Password  
+--|--
+Description:  |   
+Answer Variable Name:  | rhel_password  
+Answer Type: Password  |  
+Default Answer: changeme  |  
+
+Prompt:| Would you like to use static ips?  
+--|--
+Description:  |
+Answer Variable Name: |staticips  
+Answer Type: | Multiple Choice (single select)  
+OPTIONS:  | - true  
+        | - false  
+Default Answer: | false
+
+
+Prompt: |  Would you like to configure DNS?  
+--|--  
+Description: |
+Answer Variable Name:  | configuredns  
 Answer Type: Multiple Choice (single select)   
-Options:
- - true  
- - false  
+Options: |- true
+        |  - false  
+Default Answer: |false  
 
-Default Answer: false  
+Prompt: | Would you like to configure haproxy?  
+--|--
+Description: |
+Answer Variable Name: | configure_haproxy  
+Answer Type: | Multiple Choice (single select)   
+Options: |- true  
+| - false  
+Default Answer: | false  
 
-Prompt:  Would you like to configure haproxy?  
-Description:
-Answer Variable Name: configure_haproxy  
-Answer Type: Multiple Choice (single select)   
-Options:
- - true  
- - false  
-
-Default Answer: false  
-
-Prompt:  Would you like to configure nfs provisioner?
-Description:
-Answer Variable Name: configure_nfs_provisioner  
-Answer Type: Multiple Choice (single select)   
-Options:
- - true  
- - false  
-
-Default Answer: false  
+Prompt: |  Would you like to configure nfs provisioner?
+--|--
+Description: |
+Answer Variable Name: | configure_nfs_provisioner  
+Answer Type: | Multiple Choice (single select)   
+Options: |- true  
+ | - false  
+Default Answer: | false  
