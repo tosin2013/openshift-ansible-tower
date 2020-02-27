@@ -36,7 +36,7 @@
       cluster: "{{ vcenter_cluster }}"
       name: "{{ item.name }}"
       state: absent
-    loop: "{{ workers }}"
+    loop: "{{ masters }}"
 
   - name: Removing worker virtual machines
     vmware_guest:
