@@ -1,8 +1,15 @@
 # Ansible tower Playbooks for Openshift 4.x Deployment
 
 ## Requirements
-* iso build server
+* IMAGE Builder to create iso's or other virtual machine images.
+  - [IMAGE BUILDER GUIDE](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/image_builder_guide/index)
+  - [Red Hat Enterprise Linux 8 Image Builder: Building custom system images](https://developers.redhat.com/blog/2019/05/08/red-hat-enterprise-linux-8-image-builder-building-custom-system-images/)
 * Ansible Tower
+
+*Note:* Build iso's should contain the static ip information for server. Using a custom kickstart file will enable this.
+
+## Job Role Doumenation
+[Jobs defined in Ansible tower](/docs)
 
 ## Deployment Steps via Ansible Tower
 1. Ansible tower will deploy a helper node.
