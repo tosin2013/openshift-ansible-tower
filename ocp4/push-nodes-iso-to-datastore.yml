@@ -1,12 +1,12 @@
 - hosts: all
   become: false
   tasks:
-  - hosts: all
-    become: false
-    tasks:
-    - name: Push Master Node ISOs
-      include: setup-vcenter-vms-master-loop.yml
-      loop: "{{ masters }}"
-    - name: Push Worker Node ISOs
-      include: setup-vcenter-vms-master-loop.yml
-      loop: "{{ worker }}"
+  - name: Push BootStrap Node ISO
+    include: ../vmware_tasks/push-file-to-vsphere-datastore.yml
+    loop: "{{ bootstrap }}"
+  - name: Push Master Node ISOs
+    include: ../vmware_tasks/push-file-to-vsphere-datastore.yml
+    loop: "{{ masters }}"
+  - name: Push Worker Node ISOs
+    include: ../vmware_tasks/push-file-to-vsphere-datastore.yml
+    loop: "{{ worker }}"
