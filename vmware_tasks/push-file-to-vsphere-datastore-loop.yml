@@ -17,7 +17,7 @@
 - name:
   debug:
     msg: "SHA256 matches"
-  when: file_name_sha.stat.checksum == file_sha
+  when: file_name_sha.stat.checksum == item.file_sha
 
 - name: "Copy {{ item.file_name }} to  vcenter datastore"
   vsphere_copy:
