@@ -1,0 +1,32 @@
+- name: "Download {{ file_name }}"
+  get_url:
+    url: "{{ webserver_url }}/{{ file_name }}"
+    dest: "/tmp/{{ file_name }}"
+
+- name: "Get  {{ file_name }} sha information"
+  stat:
+    path: "/tmp/{{ file_name }}"
+    checksum_algorithm: sha256
+  register: file_name_sha
+
+- name:
+  debug:
+    var: file_name_sha
+  failed_when: file_sha != file_name_sha.stat.checksum
+
+- name:
+  debug:
+    msg: "SHA256 matches"
+  when: file_name_sha.stat.checksum == file_sha
+
+- name: "Copy {{ file_name }} to  vcenter datastore"
+  vsphere_copy:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    validate_certs: '{{ vm_validate_certs }}'
+    src:  "/tmp/{{ file_name }}"
+    datacenter: "{{ datacenter }}"
+    datastore: "{{ datastore }}"
+    path: "{{ folder_name}}/{{ file_name }}"
+  delegate_to: localhost
