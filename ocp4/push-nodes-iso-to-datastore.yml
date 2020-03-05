@@ -9,4 +9,4 @@
     loop: "{{ masters }}"
   - name: Push Worker Node ISOs
     include: ../vmware_tasks/push-file-to-vsphere-datastore-loop.yml
-    loop: "{{ worker }}"
+    loop: "{{ workers }}"
