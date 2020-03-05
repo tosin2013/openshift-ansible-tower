@@ -1,0 +1,12 @@
+- hosts: all
+  become: false
+  tasks:
+  - hosts: all
+    become: false
+    tasks:
+    - name: Push Master Node ISOs
+      include: setup-vcenter-vms-master-loop.yml
+      loop: "{{ masters }}"
+    - name: Push Worker Node ISOs
+      include: setup-vcenter-vms-master-loop.yml
+      loop: "{{ worker }}"
