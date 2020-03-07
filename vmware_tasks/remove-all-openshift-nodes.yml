@@ -3,7 +3,7 @@
   gather_facts: no
 
   tasks:
-  - name: Poweroff bootstrap virtual machines
+  - name: Poweroff bootstrap virtual machine
     vmware_guest:
       hostname: "{{ vcenter_hostname }}"
       username: "{{ vcenter_username }}"
@@ -38,7 +38,7 @@
       state: poweredoff
     loop: "{{ workers }}"
 
-  - name: Removing all master virtual machines
+  - name: Removing bootstrap virtual machine
     vmware_guest:
       hostname: "{{ vcenter_hostname }}"
       username: "{{ vcenter_username }}"
