@@ -17,6 +17,7 @@
 **Extra Variables**
 ```
 ---
+bootstrap_name: bootstrap
 masters:
   - name: master0
   - name: master1
