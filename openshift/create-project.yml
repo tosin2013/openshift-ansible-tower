@@ -22,4 +22,4 @@
     when: oc_get_project.rc == 1
 
   - name: 'Assign Permissions'
-    command: "oc policy add-role-to-user system:image-puller system:serviceaccount:{{ application_name }}-{{ lifecycle }}:default -n {{ application_name }}"
+    command: "oc policy add-role-to-user system:image-puller system:serviceaccount:{{ application_name }}-{{ lifecycle }}:default -n {{ application_name }}-{{ lifecycle }}"
