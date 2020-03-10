@@ -1,4 +1,4 @@
-- hosts: masters[0]
+- hosts: all
   vars:
     application_name: coolstore
     lifecycle: dev
