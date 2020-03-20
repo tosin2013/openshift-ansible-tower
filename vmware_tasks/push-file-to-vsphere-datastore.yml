@@ -1,5 +1,5 @@
 - hosts: all
-  become: true
+  become: false
   tasks:
   - name: "Check if {{ file_name }} on vshpere"
     vsphere_file:
@@ -12,8 +12,8 @@
       path: "{{ folder_name}}/{{ file_name }}"
       state: touch
     delegate_to: localhost
-    register: ova_check
     ignore_errors: yes
+    register: ova_check
 
   - name:
     debug:
