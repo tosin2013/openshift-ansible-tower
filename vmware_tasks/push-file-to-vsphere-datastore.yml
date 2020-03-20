@@ -1,6 +1,23 @@
 - hosts: all
   become: false
   tasks:
+  - name: "Check if {{ file_name }} on vshpere"
+    vsphere_file:
+      hostname: '{{ vcenter_hostname }}'
+      username: '{{ vcenter_username }}'
+      password: '{{ vcenter_password }}'
+      datacenter: "{{ datacenter }}"
+      datastore: "{{ datastore }}"
+      path: "{{ folder_name}}/{{ file_name }}"
+      state: touch
+    delegate_to: localhost
+    register: ova_check
+    ignore_errors: yes
+
+  - name:
+    debug:
+      var: ova_check
+
   - name: "Download {{ file_name }}"
     get_url:
       url: "{{ webserver_url }}/{{ file_name }}"
@@ -11,10 +28,9 @@
       path: "/tmp/{{ file_name }}"
       checksum_algorithm: sha256
     register: file_name_sha
-   
 
-  - name: 
-    debug: 
+  - name:
+    debug:
       var: file_name_sha
     failed_when: file_sha != file_name_sha.stat.checksum
 
