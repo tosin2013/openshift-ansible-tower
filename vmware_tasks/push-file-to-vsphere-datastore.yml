@@ -6,6 +6,7 @@
       hostname: '{{ vcenter_hostname }}'
       username: '{{ vcenter_username }}'
       password: '{{ vcenter_password }}'
+      validate_certs: '{{ vm_validate_certs }}'
       datacenter: "{{ datacenter }}"
       datastore: "{{ datastore }}"
       path: "{{ folder_name}}/{{ file_name }}"
