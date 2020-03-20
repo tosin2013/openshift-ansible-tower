@@ -10,7 +10,7 @@
       datacenter: "{{ datacenter }}"
       datastore: "{{ datastore }}"
       path: "{{ folder_name}}/{{ file_name }}"
-      state: touch
+      state: file
     delegate_to: localhost
     ignore_errors: yes
     register: ova_check
