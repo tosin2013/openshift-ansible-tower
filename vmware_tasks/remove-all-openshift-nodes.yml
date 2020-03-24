@@ -31,7 +31,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ bootstrap_name }}"
           state: poweredoff
-        when: '"{{ bootstrap_name }}" in  vm_info.virtual_machines'
+        when: '"{{ bootstrap_name }}" in "{{ vm_info.virtual_machines | json_query(query) }}"'
 
       - name: Removing bootstrap virtual machine
         vmware_guest:
@@ -42,7 +42,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ bootstrap_name }}"
           state: absent
-        when: '"{{ bootstrap_name }}" in  vm_info.virtual_machines'
+        when: '"{{ bootstrap_name }}" in  "{{ vm_info.virtual_machines | json_query(query) }}"'
 
       - name: Poweroff master virtual machines
         vmware_guest:
@@ -54,7 +54,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ item.name }}"
           state: poweredoff
-        when: '"{{ item.name }}" in  {{ vm_info.virtual_machines | json_query('virtual_machines[*].guest_name') }}'
+        when: '"{{ item.name }}" in "{{ vm_info.virtual_machines | json_query(query) }}"'
         loop: "{{ masters }}"
 
       - name: Removing all master virtual machines
@@ -66,7 +66,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ item.name }}"
           state: absent
-        when: '"{{ item.name }}" in  vm_info.virtual_machines'
+        when: '"{{ item.name }}" in  "{{ vm_info.virtual_machines | json_query(query) }}"'
         loop: "{{ masters }}"
 
   - name: Poweroff all worker virtual machines
