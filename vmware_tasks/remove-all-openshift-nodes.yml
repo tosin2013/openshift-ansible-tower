@@ -3,6 +3,8 @@
   gather_facts: no
 
   tasks:
+  - name: "Install enum using pip3"
+    shell: pip3 install --upgrade enum
   - name: Get UUID from given VM Name
     block:
       - name: Get virtual machine info
