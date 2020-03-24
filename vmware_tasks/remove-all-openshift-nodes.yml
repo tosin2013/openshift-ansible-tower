@@ -44,9 +44,9 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ bootstrap_name }}"
           state: absent
-          when: '"{{ bootstrap_name }}" in "{{ vm_info.virtual_machines | json_query(query) }}"'
-          vars:
-            query: "[?guest_name=='bootstrap']"
+        when: '"{{ bootstrap_name }}" in "{{ vm_info.virtual_machines | json_query(query) }}"'
+        vars:
+          query: "[?guest_name=='bootstrap']"
 
       - name: Poweroff master virtual machines
         vmware_guest:
