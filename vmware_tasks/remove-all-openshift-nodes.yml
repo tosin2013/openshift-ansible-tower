@@ -17,7 +17,7 @@
       - debug:
           msg: "{{ item.uuid }}"
         with_items:
-          - "{{ vm_info.virtual_machines | json_query(query) }}"
+          - "{{ bootstrap_info.virtual_machines | json_query(query) }}"
         vars:
           query: "[?guest_name=='bootstrap']"
 
@@ -45,7 +45,7 @@
           name: "{{ bootstrap_name }}"
           state: absent
         when: bootstrap_info
-        
+
   - name: Poweroff master virtual machines
     vmware_guest:
       hostname: "{{ vcenter_hostname }}"
