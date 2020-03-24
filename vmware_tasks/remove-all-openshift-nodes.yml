@@ -31,7 +31,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ bootstrap_name }}"
           state: poweredoff
-        when: '"{{ bootstrap_name }}"' in  bootstrap_info.virtual_machines
+        when: '"{{ bootstrap_name }}" in  bootstrap_info.virtual_machines'
 
       - name: Removing bootstrap virtual machine
         vmware_guest:
@@ -42,7 +42,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ bootstrap_name }}"
           state: absent
-        when: '"{{ bootstrap_name }}"' in  bootstrap_info.virtual_machines
+        when: '"{{ bootstrap_name }}" in  bootstrap_info.virtual_machines'
 
   - name: Poweroff master virtual machines
     vmware_guest:
