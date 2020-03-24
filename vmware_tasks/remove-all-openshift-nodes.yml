@@ -9,6 +9,7 @@
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       datacenter: "{{ vmware_datacenter }}"
+      folder:  "{{ vmware_folder }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ bootstrap_name }}"
@@ -20,6 +21,7 @@
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       datacenter: "{{ vmware_datacenter }}"
+      folder:  "{{ vmware_folder }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ item.name }}"
@@ -32,6 +34,7 @@
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       datacenter: "{{ vmware_datacenter }}"
+      folder:  "{{ vmware_folder }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ item.name }}"
@@ -45,6 +48,7 @@
       password: "{{ vcenter_password }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
+      folder:  "{{ vmware_folder }}"
       name: "{{ bootstrap_name }}"
       state: absent
 
@@ -56,6 +60,7 @@
       password: "{{ vcenter_password }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
+      folder:  "{{ vmware_folder }}"
       name: "{{ item.name }}"
       state: absent
     loop: "{{ masters }}"
@@ -67,6 +72,7 @@
       password: "{{ vcenter_password }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
+      folder:  "{{ vmware_folder }}"
       name: "{{ item.name }}"
       state: absent
     loop: "{{ workers }}"
