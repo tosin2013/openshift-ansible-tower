@@ -3,23 +3,23 @@
   gather_facts: no
 
   tasks:
-  - name: Check if bootstrap exists
-    vmware_guest_info:
-      hostname: "{{ vcenter_hostname }}"
-      username: "{{ vcenter_username }}"
-      password: "{{ vcenter_password }}"
-      validate_certs: no
-      datacenter: "{{ vmware_datacenter }}"
-      name: "{{ bootstrap_name }}"
-      schema: "vsphere"
-      properties:
-        - _moId
-    delegate_to: localhost
-    register: moid_info
+  - name: Get UUID from given VM Name
+    block:
+      - name: Get virtual machine info
+        vmware_vm_info:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          folder: "/Datacenter/vm/ocp4"
+        delegate_to: localhost
+        register: vm_info
 
-  - name: "Bootstrap status"
-    debug:
-      msg: "{{ moid_info }}"
+      - debug:
+          msg: "{{ item.uuid }}"
+        with_items:
+          - "{{ vm_info.virtual_machines | json_query(query) }}"
+        vars:
+          query: "[?guest_name=='bootstrap']"
 
   - name: Poweroff bootstrap virtual machine
     vmware_guest:
