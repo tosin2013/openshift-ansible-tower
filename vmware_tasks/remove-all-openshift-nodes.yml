@@ -3,7 +3,7 @@
   gather_facts: no
 
   tasks:
-  - name: Get UUID from given VM Name
+  - name: Removing Bootstrap
     block:
       - name: Get virtual machine info
         vmware_vm_info:
@@ -12,12 +12,12 @@
           password: '{{ vcenter_password }}'
           validate_certs: no
           folder: "/Datacenter/vm/ocp4"
-        register: bootstrap_info
+        register: vm_info
 
       - debug:
           msg: "{{ item.uuid }}"
         with_items:
-          - "{{ bootstrap_info.virtual_machines | json_query(query) }}"
+          - "{{ vm_info.virtual_machines | json_query(query) }}"
         vars:
           query: "[?guest_name=='bootstrap']"
 
@@ -31,7 +31,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ bootstrap_name }}"
           state: poweredoff
-        when: '"{{ bootstrap_name }}" in  bootstrap_info.virtual_machines'
+        when: '"{{ bootstrap_name }}" in  vm_info.virtual_machines'
 
       - name: Removing bootstrap virtual machine
         vmware_guest:
@@ -42,19 +42,32 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ bootstrap_name }}"
           state: absent
-        when: '"{{ bootstrap_name }}" in  bootstrap_info.virtual_machines'
+        when: '"{{ bootstrap_name }}" in  vm_info.virtual_machines'
 
-  - name: Poweroff master virtual machines
-    vmware_guest:
-      hostname: "{{ vcenter_hostname }}"
-      username: "{{ vcenter_username }}"
-      password: "{{ vcenter_password }}"
-      datacenter: "{{ vmware_datacenter }}"
-      validate_certs: no
-      cluster: "{{ vcenter_cluster }}"
-      name: "{{ item.name }}"
-      state: poweredoff
-    loop: "{{ masters }}"
+      - name: Poweroff master virtual machines
+        vmware_guest:
+          hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_username }}"
+          password: "{{ vcenter_password }}"
+          datacenter: "{{ vmware_datacenter }}"
+          validate_certs: no
+          cluster: "{{ vcenter_cluster }}"
+          name: "{{ item.name }}"
+          state: poweredoff
+        when: '"{{ item.name }}" in  vm_info.virtual_machines'
+        loop: "{{ masters }}"
+
+      - name: Removing all master virtual machines
+        vmware_guest:
+          hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_username }}"
+          password: "{{ vcenter_password }}"
+          validate_certs: no
+          cluster: "{{ vcenter_cluster }}"
+          name: "{{ item.name }}"
+          state: absent
+        when: '"{{ item.name }}" in  vm_info.virtual_machines'
+        loop: "{{ masters }}"
 
   - name: Poweroff all worker virtual machines
     vmware_guest:
@@ -67,17 +80,6 @@
       name: "{{ item.name }}"
       state: poweredoff
     loop: "{{ workers }}"
-
-  - name: Removing all master virtual machines
-    vmware_guest:
-      hostname: "{{ vcenter_hostname }}"
-      username: "{{ vcenter_username }}"
-      password: "{{ vcenter_password }}"
-      validate_certs: no
-      cluster: "{{ vcenter_cluster }}"
-      name: "{{ item.name }}"
-      state: absent
-    loop: "{{ masters }}"
 
   - name: Removing worker virtual machines
     vmware_guest:
