@@ -10,6 +10,7 @@
           hostname: '{{ vcenter_hostname }}'
           username: '{{ vcenter_username }}'
           password: '{{ vcenter_password }}'
+          validate_certs: no
           folder: "/Datacenter/vm/ocp4"
         register: vm_info
 
