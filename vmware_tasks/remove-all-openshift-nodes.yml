@@ -3,17 +3,35 @@
   gather_facts: no
 
   tasks:
+  - name: Check if bootstrap exists
+    vmware_guest_info:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: no
+      datacenter: "{{ vmware_datacenter }}"
+      name: "{{ vm_name }}"
+      schema: "vsphere"
+      properties:
+        - _moId
+    delegate_to: localhost
+    register: moid_info
+
+  - name: "Bootstrap status"
+        debug:
+          msg: "{{ moid_info }}"
+
   - name: Poweroff bootstrap virtual machine
     vmware_guest:
       hostname: "{{ vcenter_hostname }}"
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       datacenter: "{{ vmware_datacenter }}"
-      folder:  "{{ vmware_folder }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ bootstrap_name }}"
       state: poweredoff
+
 
   - name: Poweroff master virtual machines
     vmware_guest:
@@ -21,7 +39,6 @@
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       datacenter: "{{ vmware_datacenter }}"
-      folder:  "{{ vmware_folder }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ item.name }}"
@@ -34,7 +51,6 @@
       username: "{{ vcenter_username }}"
       password: "{{ vcenter_password }}"
       datacenter: "{{ vmware_datacenter }}"
-      folder:  "{{ vmware_folder }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
       name: "{{ item.name }}"
@@ -48,7 +64,6 @@
       password: "{{ vcenter_password }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
-      folder:  "{{ vmware_folder }}"
       name: "{{ bootstrap_name }}"
       state: absent
 
@@ -60,7 +75,6 @@
       password: "{{ vcenter_password }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
-      folder:  "{{ vmware_folder }}"
       name: "{{ item.name }}"
       state: absent
     loop: "{{ masters }}"
@@ -72,7 +86,6 @@
       password: "{{ vcenter_password }}"
       validate_certs: no
       cluster: "{{ vcenter_cluster }}"
-      folder:  "{{ vmware_folder }}"
       name: "{{ item.name }}"
       state: absent
     loop: "{{ workers }}"
