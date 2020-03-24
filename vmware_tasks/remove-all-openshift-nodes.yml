@@ -54,7 +54,7 @@
           cluster: "{{ vcenter_cluster }}"
           name: "{{ item.name }}"
           state: poweredoff
-        when: '"{{ item.name }}" in  vm_info.virtual_machines'
+        when: '"{{ item.name }}" in  {{ vm_info.virtual_machines | json_query('virtual_machines[*].guest_name') }}'
         loop: "{{ masters }}"
 
       - name: Removing all master virtual machines
