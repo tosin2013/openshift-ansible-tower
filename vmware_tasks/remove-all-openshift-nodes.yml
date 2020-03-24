@@ -18,8 +18,8 @@
     register: moid_info
 
   - name: "Bootstrap status"
-        debug:
-          msg: "{{ moid_info }}"
+    debug:
+      msg: "{{ moid_info }}"
 
   - name: Poweroff bootstrap virtual machine
     vmware_guest:
