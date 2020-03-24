@@ -11,7 +11,6 @@
           username: '{{ vcenter_username }}'
           password: '{{ vcenter_password }}'
           folder: "/Datacenter/vm/ocp4"
-        delegate_to: localhost
         register: vm_info
 
       - debug:
