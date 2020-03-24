@@ -77,25 +77,31 @@
           query: "[?guest_name=='{{ item.name }}']"
         loop: "{{ masters }}"
 
-  - name: Poweroff all worker virtual machines
-    vmware_guest:
-      hostname: "{{ vcenter_hostname }}"
-      username: "{{ vcenter_username }}"
-      password: "{{ vcenter_password }}"
-      datacenter: "{{ vmware_datacenter }}"
-      validate_certs: no
-      cluster: "{{ vcenter_cluster }}"
-      name: "{{ item.name }}"
-      state: poweredoff
-    loop: "{{ workers }}"
+      - name: Poweroff all worker virtual machines
+        vmware_guest:
+          hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_username }}"
+          password: "{{ vcenter_password }}"
+          datacenter: "{{ vmware_datacenter }}"
+          validate_certs: no
+          cluster: "{{ vcenter_cluster }}"
+          name: "{{ item.name }}"
+          state: poweredoff
+        when: '"{{ item.name }}" in "{{ vm_info.virtual_machines | json_query(query) }}"'
+        vars:
+          query: "[?guest_name=='{{ item.name }}']"
+        loop: "{{ workers }}"
 
-  - name: Removing worker virtual machines
-    vmware_guest:
-      hostname: "{{ vcenter_hostname }}"
-      username: "{{ vcenter_username }}"
-      password: "{{ vcenter_password }}"
-      validate_certs: no
-      cluster: "{{ vcenter_cluster }}"
-      name: "{{ item.name }}"
-      state: absent
-    loop: "{{ workers }}"
+      - name: Removing worker virtual machines
+        vmware_guest:
+          hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_username }}"
+          password: "{{ vcenter_password }}"
+          validate_certs: no
+          cluster: "{{ vcenter_cluster }}"
+          name: "{{ item.name }}"
+          state: absent
+        when: '"{{ item.name }}" in "{{ vm_info.virtual_machines | json_query(query) }}"'
+        vars:
+          query: "[?guest_name=='{{ item.name }}']"
+        loop: "{{ workers }}"
