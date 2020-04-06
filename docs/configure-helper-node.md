@@ -20,7 +20,7 @@
 disk: sda
 helper:
   name: helper
-  ipaddr: 192.168.1.19
+  ipaddr: 192.168.1.10
   networkifacename: ens192
 dns:
   domain: example.com
@@ -67,9 +67,9 @@ ocp_initramfs: >-
 ocp_install_kernel: >-
   https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0/rhcos-4.3.0-x86_64-installer-kernel
 ocp_client: >-
-  https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0/openshift-client-linux-4.3.0.tar.gz
+  https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0/openshift-client-linux-4.3.8.tar.gz
 ocp_installer: >-
-  https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0/openshift-install-linux-4.3.0.tar.gz
+  https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0/openshift-install-linux-4.3.8.tar.gz
 ```
 
 **Survey Menu**  

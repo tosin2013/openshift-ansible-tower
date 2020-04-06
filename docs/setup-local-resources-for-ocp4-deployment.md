@@ -39,7 +39,7 @@ download:
     https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/latest/latest/rhcos-4.3.0-x86_64-vmware.ova
 ova_sha: 9999999
 ntp_server: rhel.pool.ntp.org
-dns_server: 192.168.1.19
+dns_server: 192.168.1.10
 configure_static_ips: false
 gateway: 192.168.1.1
 cidr: 24
